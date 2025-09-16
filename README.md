@@ -21,16 +21,17 @@ A comprehensive multi-agent platform for software development workflows, featuri
                                                         └─────────────────────┘
 
 
-
-
-
-```
-
----
-![Homepage Screenshot]([(https://github.com/niladribhandari/genaiagent/blob/main/Screenshots/Screenshot%202025-09-16%20at%2018.43.04.png)])
-
-### Dashboard
+### Developer Assistant
 <img src="https://github.com/niladribhandari/genaiagent/blob/main/Screenshots/Screenshot%202025-09-16%20at%2018.43.04.png" alt="Dashboard Screenshot" width="600"/>
+
+### API Specification
+<img src="https://github.com/niladribhandari/genaiagent/blob/main/Screenshots/Screenshot%202025-09-16%20at%2018.43.30.png" alt="Dashboard Screenshot" width="600"/>
+
+### Generated Code
+<img src="https://github.com/niladribhandari/genaiagent/blob/main/Screenshots/Screenshot%202025-09-16%20at%2020.33.10.png" alt="Dashboard Screenshot" width="600"/>
+
+### Code Structure
+<img src="https://github.com/niladribhandari/genaiagent/blob/main/Screenshots/Screenshot%202025-09-16%20at%2021.23.35.png" alt="Dashboard Screenshot" width="600"/>
 
 
 ## 🚀 Quick Start
