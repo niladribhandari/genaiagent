@@ -19,7 +19,7 @@ A comprehensive multi-agent platform for software development workflows, featuri
                                                         │ • API Spec Writing  │
                                                         │ • Workflow Orch.    │
                                                         └─────────────────────┘
-
+```
 
 ### Developer Assistant
 <img src="https://github.com/niladribhandari/genaiagent/blob/main/Screenshots/Screenshot%202025-09-16%20at%2018.43.04.png" alt="Dashboard Screenshot" width="600"/>
