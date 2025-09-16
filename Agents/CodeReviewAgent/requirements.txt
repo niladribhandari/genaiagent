@@ -1,0 +1,86 @@
+# Code Review Agent Requirements
+
+# Core dependencies
+python-dotenv>=1.0.0
+pyyaml>=6.0
+pydantic>=2.0.0
+
+# AI and language models
+openai>=1.0.0
+tiktoken>=0.5.0
+
+# Static analysis tools
+pylint>=2.15.0
+flake8>=5.0.0
+bandit>=1.7.4
+safety>=2.3.0
+vulture>=2.6
+radon>=5.1.0
+
+# Code formatting and style
+black>=22.0.0
+isort>=5.10.0
+autopep8>=2.0.0
+
+# AST parsing and analysis
+ast-decompiler>=0.7.0
+astor>=0.8.1
+astunparse>=1.6.3
+
+# Documentation analysis
+pydocstyle>=6.1.0
+doc8>=1.0.0
+
+# Security analysis
+semgrep>=1.0.0
+
+# Code complexity analysis
+mccabe>=0.7.0
+cognitive-complexity>=1.3.0
+
+# Language support
+tree-sitter>=0.20.0
+tree-sitter-python>=0.20.0
+tree-sitter-javascript>=0.20.0
+tree-sitter-java>=0.20.0
+tree-sitter-go>=0.20.0
+tree-sitter-rust>=0.20.0
+
+# File handling
+pathspec>=0.10.0
+gitpython>=3.1.0
+
+# HTTP client for API calls
+aiohttp>=3.8.0
+requests>=2.28.0
+
+# Data processing
+pandas>=1.5.0
+numpy>=1.21.0
+
+# Async support
+aiofiles>=0.8.0
+asyncio-throttle>=1.0.2
+
+# Logging
+structlog>=22.1.0
+colorlog>=6.7.0
+
+# Configuration management
+configparser>=5.3.0
+click>=8.1.0
+
+# Testing and development
+pytest>=7.0.0
+pytest-asyncio>=0.20.0
+pytest-mock>=3.8.0
+pytest-cov>=4.0.0
+
+# Report generation
+jinja2>=3.1.0
+markdown>=3.5.0
+reportlab>=3.6.0
+
+# Performance monitoring
+psutil>=5.9.0
+memory-profiler>=0.60.0

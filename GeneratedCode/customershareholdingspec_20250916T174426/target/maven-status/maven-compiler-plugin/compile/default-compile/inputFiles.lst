@@ -1,0 +1,12 @@
+/Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/customershareholdingspec_20250916T174426/src/main/java/com/financecorp/investment/holdings/dto/ShareHoldingResponse.java
+/Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/customershareholdingspec_20250916T174426/src/main/java/com/financecorp/investment/holdings/mapper/ShareHoldingMapper.java
+/Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/customershareholdingspec_20250916T174426/src/main/java/com/financecorp/investment/holdings/client/ShareHoldingClient.java
+/Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/customershareholdingspec_20250916T174426/src/main/java/com/financecorp/investment/holdings/controller/ShareHoldingController.java
+/Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/customershareholdingspec_20250916T174426/src/main/java/com/financecorp/investment/holdings/service/impl/ShareHoldingServiceImpl.java
+/Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/customershareholdingspec_20250916T174426/src/main/java/com/financecorp/investment/holdings/CustomerShareHoldingIntegrationAPIApplication.java
+/Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/customershareholdingspec_20250916T174426/src/main/java/com/financecorp/investment/holdings/repository/ShareHoldingRepository.java
+/Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/customershareholdingspec_20250916T174426/src/main/java/com/financecorp/investment/holdings/model/ShareHolding.java
+/Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/customershareholdingspec_20250916T174426/src/main/java/com/financecorp/investment/holdings/service/ShareHoldingService.java
+/Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/customershareholdingspec_20250916T174426/src/main/java/com/financecorp/investment/holdings/config/ShareHoldingConfig.java
+/Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/customershareholdingspec_20250916T174426/src/main/java/com/financecorp/investment/holdings/dto/ShareHoldingRequest.java
+/Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/customershareholdingspec_20250916T174426/src/main/java/com/financecorp/investment/holdings/exception/ShareHoldingNotFoundException.java

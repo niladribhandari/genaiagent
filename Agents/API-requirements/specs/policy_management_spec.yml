@@ -1,0 +1,1654 @@
+metadata:
+  company:
+    name: "PolicyCorp"
+    domain: "policycorp.com"
+    package: "com.policycorp.insurance.policy"
+  project:
+    name: "PolicyManagementAPI"
+    description: "Enterprise policy management service with advanced business logic and risk assessment"
+    version: "2.0.0"
+  base_package: "com.policycorp.insurance.policy"
+  company_name: "PolicyCorp"
+  company_domain: "policycorp.com"
+  version: "2.0.0"
+  description: "Advanced policy management API with risk assessment, premium calculation, and workflow management"
+  team: "Policy Management Team"
+  owner: "policy-team@policycorp.com"
+  
+# Language and Framework Configuration
+language: "java"
+framework: "spring boot"
+
+# Package Structure Configuration
+package_structure:
+  controller: "com.policycorp.insurance.policy.controller"
+  service: "com.policycorp.insurance.policy.service"
+  repository: "com.policycorp.insurance.policy.repository"
+  model: "com.policycorp.insurance.policy.model"
+  dto: "com.policycorp.insurance.policy.dto"
+  config: "com.policycorp.insurance.policy.config"
+  exception: "com.policycorp.insurance.policy.exception"
+  util: "com.policycorp.insurance.policy.util"
+  validation: "com.policycorp.insurance.policy.validation"
+  workflow: "com.policycorp.insurance.policy.workflow"
+  calculation: "com.policycorp.insurance.policy.calculation"
+  risk: "com.policycorp.insurance.policy.risk"
+  audit: "com.policycorp.insurance.policy.audit"
+
+
+# API Configuration
+api:
+  name: "PolicyManagementAPI"
+  version: "v1"
+  base_path: "/api/v1"
+  description: "REST API for managing policies with CRUD operations"
+  
+# Database Configuration
+database:
+  name: "policy_db"
+  user: "policy_user"
+  password: "policy_password"
+  
+# Main Entity
+entity:
+  name: "Policy"
+  description: "Insurance or organizational policy entity"
+  
+# API Endpoints
+endpoints:
+  - name: "Create Policy"
+    method: "POST"
+    path: "/policies"
+    description: "Create a new policy with risk assessment and premium calculation"
+    request_body:
+      type: "PolicyRequest"
+      required: true
+      description: "Policy creation details with risk factors"
+    responses:
+      201:
+        description: "Policy created successfully with calculated premium"
+        content: "PolicyResponse"
+      400:
+        description: "Invalid request data or risk assessment failed"
+      409:
+        description: "Policy already exists"
+      422:
+        description: "Business rules validation failed"
+        
+  - name: "Get Policy by ID"
+    method: "GET"
+    path: "/policies/{id}"
+    description: "Retrieve policy details by ID with current risk score"
+    parameters:
+      - name: "id"
+        type: "UUID"
+        location: "path"
+        required: true
+        description: "Policy unique identifier"
+      - name: "includeHistory"
+        type: "boolean"
+        location: "query"
+        required: false
+        default: false
+        description: "Include policy history and changes"
+    responses:
+      200:
+        description: "Policy retrieved successfully"
+        content: "PolicyResponse"
+      404:
+        description: "Policy not found"
+        
+  - name: "Update Policy"
+    method: "PUT"
+    path: "/policies/{id}"
+    description: "Update an existing policy with workflow validation"
+    parameters:
+      - name: "id"
+        type: "UUID"
+        location: "path"
+        required: true
+        description: "Policy unique identifier"
+    request_body:
+      type: "PolicyUpdateRequest"
+      required: true
+      description: "Updated policy details with change reason"
+    responses:
+      200:
+        description: "Policy updated successfully"
+        content: "PolicyResponse"
+      400:
+        description: "Invalid request data"
+      404:
+        description: "Policy not found"
+      409:
+        description: "Policy number already exists"
+      422:
+        description: "Workflow validation failed"
+        
+  - name: "Get All Policies"
+    method: "GET"
+    path: "/policies"
+    description: "Retrieve all policies with advanced filtering and risk analytics"
+    parameters:
+      - name: "page"
+        type: "int"
+        location: "query"
+        required: false
+        default: 0
+        description: "Page number (0-based)"
+      - name: "size"
+        type: "int"
+        location: "query"
+        required: false
+        default: 10
+        description: "Page size"
+      - name: "status"
+        type: "string"
+        location: "query"
+        required: false
+        description: "Filter by policy status"
+      - name: "policyType"
+        type: "string"
+        location: "query"
+        required: false
+        description: "Filter by policy type"
+      - name: "riskLevel"
+        type: "string"
+        location: "query"
+        required: false
+        description: "Filter by risk level (LOW, MEDIUM, HIGH)"
+      - name: "expiringWithinDays"
+        type: "int"
+        location: "query"
+        required: false
+        description: "Filter policies expiring within specified days"
+      - name: "premiumRange"
+        type: "string"
+        location: "query"
+        required: false
+        description: "Filter by premium range (e.g., '100-500')"
+    responses:
+      200:
+        description: "Policies retrieved successfully with analytics"
+        content: "PolicyPageResponse"
+
+  - name: "Calculate Premium"
+    method: "POST"
+    path: "/policies/calculate-premium"
+    description: "Calculate premium for policy without creating it"
+    request_body:
+      type: "PremiumCalculationRequest"
+      required: true
+      description: "Policy details for premium calculation"
+    responses:
+      200:
+        description: "Premium calculated successfully"
+        content: "PremiumCalculationResponse"
+      400:
+        description: "Invalid calculation parameters"
+
+  - name: "Assess Risk"
+    method: "POST"
+    path: "/policies/assess-risk"
+    description: "Perform risk assessment for a policy"
+    request_body:
+      type: "RiskAssessmentRequest"
+      required: true
+      description: "Risk assessment parameters"
+    responses:
+      200:
+        description: "Risk assessment completed"
+        content: "RiskAssessmentResponse"
+      400:
+        description: "Invalid risk assessment parameters"
+
+  - name: "Approve Policy"
+    method: "POST"
+    path: "/policies/{id}/approve"
+    description: "Approve a draft policy through workflow"
+    parameters:
+      - name: "id"
+        type: "UUID"
+        location: "path"
+        required: true
+        description: "Policy unique identifier"
+    request_body:
+      type: "ApprovalRequest"
+      required: true
+      description: "Approval details and comments"
+    responses:
+      200:
+        description: "Policy approved successfully"
+        content: "PolicyResponse"
+      404:
+        description: "Policy not found"
+      422:
+        description: "Policy cannot be approved in current state"
+
+  - name: "Renew Policy"
+    method: "POST"
+    path: "/policies/{id}/renew"
+    description: "Renew an expiring policy with updated terms"
+    parameters:
+      - name: "id"
+        type: "UUID"
+        location: "path"
+        required: true
+        description: "Policy unique identifier"
+    request_body:
+      type: "PolicyRenewalRequest"
+      required: true
+      description: "Renewal terms and updated details"
+    responses:
+      200:
+        description: "Policy renewed successfully"
+        content: "PolicyResponse"
+      404:
+        description: "Policy not found"
+      422:
+        description: "Policy cannot be renewed"
+
+  - name: "Get Policy Analytics"
+    method: "GET"
+    path: "/policies/analytics"
+    description: "Get policy analytics and insights"
+    parameters:
+      - name: "timeRange"
+        type: "string"
+        location: "query"
+        required: false
+        default: "30d"
+        description: "Time range for analytics (7d, 30d, 90d, 1y)"
+      - name: "groupBy"
+        type: "string"
+        location: "query"
+        required: false
+        description: "Group analytics by (type, status, risk_level)"
+    responses:
+      200:
+        description: "Analytics data retrieved successfully"
+        content: "PolicyAnalyticsResponse"
+
+# Data Models
+models:
+  PolicyRequest:
+    description: "Request model for creating a new policy with risk assessment"
+    properties:
+      policyNumber:
+        type: "string"
+        description: "Unique policy number (auto-generated if not provided)"
+        required: false
+        validation:
+          - pattern: "^POL-[0-9]{8}$"
+          - max_length: 20
+      policyType:
+        type: "string"
+        description: "Type of policy with specific risk categories"
+        required: true
+        enum: ["LIFE", "HEALTH", "AUTO", "HOME", "BUSINESS", "TRAVEL", "DISABILITY", "UMBRELLA"]
+      holderName:
+        type: "string"
+        description: "Name of the policy holder"
+        required: true
+        validation:
+          - min_length: 2
+          - max_length: 100
+          - pattern: "^[a-zA-Z\\s'-]+$"
+      holderEmail:
+        type: "string"
+        description: "Email address of the policy holder"
+        required: true
+        validation:
+          - email: true
+          - max_length: 255
+      holderPhone:
+        type: "string"
+        description: "Phone number of the policy holder"
+        required: true
+        validation:
+          - pattern: "^\\+?[1-9]\\d{1,14}$"
+      holderDateOfBirth:
+        type: "LocalDate"
+        description: "Date of birth for age-based risk calculation"
+        required: true
+      holderAddress:
+        type: "AddressRequest"
+        description: "Policy holder's address for location-based risk"
+        required: true
+      coverageAmount:
+        type: "BigDecimal"
+        description: "Total coverage amount"
+        required: true
+        validation:
+          - min: 1000.00
+          - max: 50000000.00
+      startDate:
+        type: "LocalDate"
+        description: "Policy start date"
+        required: true
+      policyTerm:
+        type: "int"
+        description: "Policy term in years"
+        required: true
+        validation:
+          - min: 1
+          - max: 50
+      riskFactors:
+        type: "RiskFactorsRequest"
+        description: "Risk assessment factors"
+        required: true
+      beneficiaries:
+        type: "List<BeneficiaryRequest>"
+        description: "List of policy beneficiaries"
+        required: false
+      additionalCoverage:
+        type: "List<AdditionalCoverageRequest>"
+        description: "Additional coverage options"
+        required: false
+      paymentFrequency:
+        type: "string"
+        description: "Premium payment frequency"
+        required: true
+        enum: ["MONTHLY", "QUARTERLY", "SEMI_ANNUAL", "ANNUAL"]
+      agentId:
+        type: "UUID"
+        description: "Insurance agent handling the policy"
+        required: false
+
+  PolicyUpdateRequest:
+    description: "Request model for updating an existing policy"
+    properties:
+      holderEmail:
+        type: "string"
+        description: "Updated email address"
+        required: false
+        validation:
+          - email: true
+          - max_length: 255
+      holderPhone:
+        type: "string"
+        description: "Updated phone number"
+        required: false
+        validation:
+          - pattern: "^\\+?[1-9]\\d{1,14}$"
+      holderAddress:
+        type: "AddressRequest"
+        description: "Updated address"
+        required: false
+      beneficiaries:
+        type: "List<BeneficiaryRequest>"
+        description: "Updated beneficiaries list"
+        required: false
+      additionalCoverage:
+        type: "List<AdditionalCoverageRequest>"
+        description: "Updated additional coverage"
+        required: false
+      changeReason:
+        type: "string"
+        description: "Reason for policy update"
+        required: true
+        validation:
+          - min_length: 10
+          - max_length: 500
+      requiresApproval:
+        type: "boolean"
+        description: "Whether update requires approval"
+        required: false
+        default: false
+
+  PolicyResponse:
+    description: "Response model for policy data with calculated fields"
+    properties:
+      id:
+        type: "UUID"
+        description: "Policy unique identifier"
+      policyNumber:
+        type: "string"
+        description: "Unique policy number"
+      policyType:
+        type: "string"
+        description: "Type of policy"
+      holderName:
+        type: "string"
+        description: "Name of the policy holder"
+      holderEmail:
+        type: "string"
+        description: "Email address of the policy holder"
+      holderPhone:
+        type: "string"
+        description: "Phone number of the policy holder"
+      holderDateOfBirth:
+        type: "LocalDate"
+        description: "Policy holder's date of birth"
+      holderAge:
+        type: "int"
+        description: "Calculated age of policy holder"
+      holderAddress:
+        type: "AddressResponse"
+        description: "Policy holder's address"
+      premiumAmount:
+        type: "BigDecimal"
+        description: "Calculated premium amount"
+      coverageAmount:
+        type: "BigDecimal"
+        description: "Total coverage amount"
+      startDate:
+        type: "LocalDate"
+        description: "Policy start date"
+      endDate:
+        type: "LocalDate"
+        description: "Policy end date"
+      policyTerm:
+        type: "int"
+        description: "Policy term in years"
+      status:
+        type: "string"
+        description: "Policy status"
+        enum: ["DRAFT", "PENDING_APPROVAL", "ACTIVE", "SUSPENDED", "EXPIRED", "CANCELLED", "LAPSED"]
+      riskLevel:
+        type: "string"
+        description: "Calculated risk level"
+        enum: ["LOW", "MEDIUM", "HIGH", "VERY_HIGH"]
+      riskScore:
+        type: "BigDecimal"
+        description: "Calculated risk score (0-100)"
+      riskFactors:
+        type: "RiskFactorsResponse"
+        description: "Risk assessment details"
+      beneficiaries:
+        type: "List<BeneficiaryResponse>"
+        description: "List of policy beneficiaries"
+      additionalCoverage:
+        type: "List<AdditionalCoverageResponse>"
+        description: "Additional coverage details"
+      paymentFrequency:
+        type: "string"
+        description: "Premium payment frequency"
+      nextPremiumDue:
+        type: "LocalDate"
+        description: "Next premium payment due date"
+      totalPremiumPaid:
+        type: "BigDecimal"
+        description: "Total premium paid to date"
+      cashValue:
+        type: "BigDecimal"
+        description: "Current cash value (for applicable policies)"
+      agentId:
+        type: "UUID"
+        description: "Insurance agent ID"
+      agentName:
+        type: "string"
+        description: "Insurance agent name"
+      workflowStatus:
+        type: "string"
+        description: "Current workflow status"
+      approvalHistory:
+        type: "List<ApprovalRecord>"
+        description: "Policy approval history"
+      createdAt:
+        type: "LocalDateTime"
+        description: "Policy creation timestamp"
+      updatedAt:
+        type: "LocalDateTime"
+        description: "Last update timestamp"
+      createdBy:
+        type: "string"
+        description: "User who created the policy"
+      updatedBy:
+        type: "string"
+        description: "User who last updated the policy"
+
+  AddressRequest:
+    description: "Address information for risk assessment"
+    properties:
+      street:
+        type: "string"
+        description: "Street address"
+        required: true
+        validation:
+          - max_length: 200
+      city:
+        type: "string"
+        description: "City name"
+        required: true
+        validation:
+          - max_length: 100
+      state:
+        type: "string"
+        description: "State or province"
+        required: true
+        validation:
+          - max_length: 50
+      zipCode:
+        type: "string"
+        description: "ZIP or postal code"
+        required: true
+        validation:
+          - pattern: "^[0-9]{5}(-[0-9]{4})?$"
+      country:
+        type: "string"
+        description: "Country code"
+        required: true
+        validation:
+          - pattern: "^[A-Z]{2}$"
+
+  AddressResponse:
+    description: "Address information with risk zone data"
+    properties:
+      street:
+        type: "string"
+        description: "Street address"
+      city:
+        type: "string"
+        description: "City name"
+      state:
+        type: "string"
+        description: "State or province"
+      zipCode:
+        type: "string"
+        description: "ZIP or postal code"
+      country:
+        type: "string"
+        description: "Country code"
+      riskZone:
+        type: "string"
+        description: "Calculated risk zone"
+        enum: ["LOW_RISK", "MODERATE_RISK", "HIGH_RISK", "CATASTROPHE_PRONE"]
+      floodZone:
+        type: "string"
+        description: "FEMA flood zone designation"
+      earthquakeZone:
+        type: "string"
+        description: "Earthquake risk zone"
+
+  RiskFactorsRequest:
+    description: "Risk assessment factors for premium calculation"
+    properties:
+      healthStatus:
+        type: "string"
+        description: "Health status for life/health insurance"
+        required: false
+        enum: ["EXCELLENT", "GOOD", "FAIR", "POOR"]
+      smokingStatus:
+        type: "string"
+        description: "Smoking status"
+        required: false
+        enum: ["NEVER", "FORMER", "CURRENT"]
+      occupation:
+        type: "string"
+        description: "Occupation category"
+        required: false
+        enum: ["LOW_RISK", "MODERATE_RISK", "HIGH_RISK", "HAZARDOUS"]
+      drivingRecord:
+        type: "DrivingRecordRequest"
+        description: "Driving record for auto insurance"
+        required: false
+      creditScore:
+        type: "int"
+        description: "Credit score for risk assessment"
+        required: false
+        validation:
+          - min: 300
+          - max: 850
+      hobbies:
+        type: "List<string>"
+        description: "High-risk hobbies or activities"
+        required: false
+      medicalHistory:
+        type: "List<MedicalConditionRequest>"
+        description: "Relevant medical history"
+        required: false
+      propertyDetails:
+        type: "PropertyDetailsRequest"
+        description: "Property details for home insurance"
+        required: false
+
+  RiskFactorsResponse:
+    description: "Risk assessment results with calculated scores"
+    properties:
+      healthStatus:
+        type: "string"
+        description: "Health status"
+      healthRiskScore:
+        type: "BigDecimal"
+        description: "Health risk score (0-100)"
+      smokingStatus:
+        type: "string"
+        description: "Smoking status"
+      smokingRiskMultiplier:
+        type: "BigDecimal"
+        description: "Smoking risk multiplier"
+      occupation:
+        type: "string"
+        description: "Occupation category"
+      occupationRiskScore:
+        type: "BigDecimal"
+        description: "Occupation risk score (0-100)"
+      drivingRecord:
+        type: "DrivingRecordResponse"
+        description: "Driving record assessment"
+      creditScore:
+        type: "int"
+        description: "Credit score"
+      creditRiskScore:
+        type: "BigDecimal"
+        description: "Credit-based risk score"
+      hobbies:
+        type: "List<string>"
+        description: "High-risk activities"
+      hobbiesRiskScore:
+        type: "BigDecimal"
+        description: "Activities risk score"
+      medicalHistory:
+        type: "List<MedicalConditionResponse>"
+        description: "Medical conditions assessment"
+      medicalRiskScore:
+        type: "BigDecimal"
+        description: "Medical risk score"
+      propertyDetails:
+        type: "PropertyDetailsResponse"
+        description: "Property risk assessment"
+      propertyRiskScore:
+        type: "BigDecimal"
+        description: "Property risk score"
+      overallRiskScore:
+        type: "BigDecimal"
+        description: "Combined risk score (0-100)"
+      riskLevel:
+        type: "string"
+        description: "Risk level classification"
+
+  DrivingRecordRequest:
+    description: "Driving record information"
+    properties:
+      yearsLicensed:
+        type: "int"
+        description: "Years holding driver's license"
+        required: true
+        validation:
+          - min: 0
+          - max: 80
+      accidents:
+        type: "List<AccidentRequest>"
+        description: "Accident history"
+        required: false
+      violations:
+        type: "List<ViolationRequest>"
+        description: "Traffic violations"
+        required: false
+      annualMileage:
+        type: "int"
+        description: "Annual mileage driven"
+        required: false
+        validation:
+          - min: 0
+          - max: 100000
+
+  DrivingRecordResponse:
+    description: "Driving record assessment results"
+    properties:
+      yearsLicensed:
+        type: "int"
+        description: "Years holding driver's license"
+      accidents:
+        type: "List<AccidentResponse>"
+        description: "Accident history with impact scores"
+      violations:
+        type: "List<ViolationResponse>"
+        description: "Traffic violations with impact scores"
+      annualMileage:
+        type: "int"
+        description: "Annual mileage driven"
+      experienceScore:
+        type: "BigDecimal"
+        description: "Driving experience score"
+      safetyScore:
+        type: "BigDecimal"
+        description: "Driving safety score"
+      overallDrivingScore:
+        type: "BigDecimal"
+        description: "Overall driving risk score"
+
+  BeneficiaryRequest:
+    description: "Request model for policy beneficiary with enhanced validation"
+    properties:
+      name:
+        type: "string"
+        description: "Beneficiary full name"
+        required: true
+        validation:
+          - min_length: 2
+          - max_length: 100
+          - pattern: "^[a-zA-Z\\s'-]+$"
+      relationship:
+        type: "string"
+        description: "Relationship to policy holder"
+        required: true
+        enum: ["SPOUSE", "CHILD", "PARENT", "SIBLING", "DOMESTIC_PARTNER", "TRUST", "ESTATE", "OTHER"]
+      percentage:
+        type: "BigDecimal"
+        description: "Percentage of benefit (0-100)"
+        required: true
+        validation:
+          - min: 0.01
+          - max: 100.00
+      dateOfBirth:
+        type: "LocalDate"
+        description: "Beneficiary date of birth"
+        required: false
+      ssn:
+        type: "string"
+        description: "Social Security Number (encrypted)"
+        required: false
+        validation:
+          - pattern: "^[0-9]{3}-[0-9]{2}-[0-9]{4}$"
+      contactEmail:
+        type: "string"
+        description: "Beneficiary contact email"
+        required: false
+        validation:
+          - email: true
+      contactPhone:
+        type: "string"
+        description: "Beneficiary contact phone"
+        required: false
+        validation:
+          - pattern: "^\\+?[1-9]\\d{1,14}$"
+      address:
+        type: "AddressRequest"
+        description: "Beneficiary address"
+        required: false
+      contingent:
+        type: "boolean"
+        description: "Whether this is a contingent beneficiary"
+        required: false
+        default: false
+
+  BeneficiaryResponse:
+    description: "Response model for policy beneficiary with validation status"
+    properties:
+      id:
+        type: "UUID"
+        description: "Beneficiary unique identifier"
+      name:
+        type: "string"
+        description: "Beneficiary full name"
+      relationship:
+        type: "string"
+        description: "Relationship to policy holder"
+      percentage:
+        type: "BigDecimal"
+        description: "Percentage of benefit"
+      dateOfBirth:
+        type: "LocalDate"
+        description: "Beneficiary date of birth"
+      age:
+        type: "int"
+        description: "Calculated age"
+      contactEmail:
+        type: "string"
+        description: "Beneficiary contact email"
+      contactPhone:
+        type: "string"
+        description: "Beneficiary contact phone"
+      address:
+        type: "AddressResponse"
+        description: "Beneficiary address"
+      contingent:
+        type: "boolean"
+        description: "Whether this is a contingent beneficiary"
+      validationStatus:
+        type: "string"
+        description: "Beneficiary validation status"
+        enum: ["PENDING", "VERIFIED", "FAILED", "REQUIRES_DOCUMENTATION"]
+      estimatedBenefit:
+        type: "BigDecimal"
+        description: "Estimated benefit amount based on current coverage"
+
+  AdditionalCoverageRequest:
+    description: "Request for additional coverage options"
+    properties:
+      coverageType:
+        type: "string"
+        description: "Type of additional coverage"
+        required: true
+        enum: ["ACCIDENTAL_DEATH", "DISABILITY_WAIVER", "LONG_TERM_CARE", "CRITICAL_ILLNESS", "TERM_RIDER"]
+      coverageAmount:
+        type: "BigDecimal"
+        description: "Coverage amount for this rider"
+        required: true
+        validation:
+          - min: 1000.00
+          - max: 5000000.00
+      coverageDetails:
+        type: "Map<String, Object>"
+        description: "Coverage-specific configuration"
+        required: false
+
+  AdditionalCoverageResponse:
+    description: "Response for additional coverage with calculated premium"
+    properties:
+      id:
+        type: "UUID"
+        description: "Coverage unique identifier"
+      coverageType:
+        type: "string"
+        description: "Type of additional coverage"
+      coverageAmount:
+        type: "BigDecimal"
+        description: "Coverage amount"
+      additionalPremium:
+        type: "BigDecimal"
+        description: "Additional premium for this coverage"
+      coverageDetails:
+        type: "Map<String, Object>"
+        description: "Coverage-specific details"
+      effectiveDate:
+        type: "LocalDate"
+        description: "Coverage effective date"
+      expirationDate:
+        type: "LocalDate"
+        description: "Coverage expiration date"
+      status:
+        type: "string"
+        description: "Coverage status"
+        enum: ["ACTIVE", "PENDING", "SUSPENDED", "TERMINATED"]
+
+  PremiumCalculationRequest:
+    description: "Request for premium calculation"
+    properties:
+      policyType:
+        type: "string"
+        description: "Type of policy"
+        required: true
+        enum: ["LIFE", "HEALTH", "AUTO", "HOME", "BUSINESS", "TRAVEL", "DISABILITY", "UMBRELLA"]
+      coverageAmount:
+        type: "BigDecimal"
+        description: "Desired coverage amount"
+        required: true
+      holderAge:
+        type: "int"
+        description: "Policy holder age"
+        required: true
+      riskFactors:
+        type: "RiskFactorsRequest"
+        description: "Risk assessment factors"
+        required: true
+      paymentFrequency:
+        type: "string"
+        description: "Payment frequency"
+        required: true
+        enum: ["MONTHLY", "QUARTERLY", "SEMI_ANNUAL", "ANNUAL"]
+      policyTerm:
+        type: "int"
+        description: "Policy term in years"
+        required: true
+      additionalCoverage:
+        type: "List<AdditionalCoverageRequest>"
+        description: "Additional coverage options"
+        required: false
+
+  PremiumCalculationResponse:
+    description: "Premium calculation results with breakdown"
+    properties:
+      basePremium:
+        type: "BigDecimal"
+        description: "Base premium amount"
+      riskAdjustment:
+        type: "BigDecimal"
+        description: "Risk-based adjustment"
+      additionalCoveragePremium:
+        type: "BigDecimal"
+        description: "Premium for additional coverage"
+      discounts:
+        type: "BigDecimal"
+        description: "Applied discounts"
+      taxes:
+        type: "BigDecimal"
+        description: "Applicable taxes"
+      totalPremium:
+        type: "BigDecimal"
+        description: "Total premium amount"
+      paymentFrequency:
+        type: "string"
+        description: "Payment frequency"
+      premiumBreakdown:
+        type: "List<PremiumComponent>"
+        description: "Detailed premium breakdown"
+      riskLevel:
+        type: "string"
+        description: "Assessed risk level"
+      calculationDate:
+        type: "LocalDateTime"
+        description: "Calculation timestamp"
+      validUntil:
+        type: "LocalDateTime"
+        description: "Quote validity period"
+
+  RiskAssessmentRequest:
+    description: "Request for comprehensive risk assessment"
+    properties:
+      policyType:
+        type: "string"
+        description: "Type of policy for assessment"
+        required: true
+      applicantInfo:
+        type: "ApplicantInfoRequest"
+        description: "Applicant information"
+        required: true
+      riskFactors:
+        type: "RiskFactorsRequest"
+        description: "Risk factors to assess"
+        required: true
+      assessmentType:
+        type: "string"
+        description: "Type of assessment"
+        required: true
+        enum: ["BASIC", "COMPREHENSIVE", "MEDICAL_REQUIRED", "FINANCIAL_REVIEW"]
+
+  RiskAssessmentResponse:
+    description: "Comprehensive risk assessment results"
+    properties:
+      assessmentId:
+        type: "UUID"
+        description: "Assessment unique identifier"
+      overallRiskScore:
+        type: "BigDecimal"
+        description: "Overall risk score (0-100)"
+      riskLevel:
+        type: "string"
+        description: "Risk level classification"
+        enum: ["LOW", "MEDIUM", "HIGH", "VERY_HIGH", "DECLINED"]
+      riskFactorScores:
+        type: "Map<String, BigDecimal>"
+        description: "Individual risk factor scores"
+      recommendations:
+        type: "List<string>"
+        description: "Underwriting recommendations"
+      requiredDocuments:
+        type: "List<string>"
+        description: "Additional documents required"
+      approvalStatus:
+        type: "string"
+        description: "Preliminary approval status"
+        enum: ["APPROVED", "CONDITIONAL", "REQUIRES_REVIEW", "DECLINED"]
+      conditions:
+        type: "List<string>"
+        description: "Approval conditions"
+      assessmentDate:
+        type: "LocalDateTime"
+        description: "Assessment completion date"
+      validUntil:
+        type: "LocalDateTime"
+        description: "Assessment validity period"
+      assessorId:
+        type: "string"
+        description: "ID of the risk assessor"
+
+  PolicyRenewalRequest:
+    description: "Request for policy renewal with updated terms"
+    properties:
+      renewalTerm:
+        type: "int"
+        description: "Renewal term in years"
+        required: true
+        validation:
+          - min: 1
+          - max: 50
+      coverageChanges:
+        type: "CoverageChangesRequest"
+        description: "Requested coverage changes"
+        required: false
+      beneficiaryUpdates:
+        type: "List<BeneficiaryRequest>"
+        description: "Updated beneficiary information"
+        required: false
+      renewalReason:
+        type: "string"
+        description: "Reason for renewal"
+        required: true
+        validation:
+          - min_length: 10
+          - max_length: 500
+      acceptPremiumIncrease:
+        type: "boolean"
+        description: "Accept premium increase if applicable"
+        required: true
+
+  ApprovalRequest:
+    description: "Request for policy approval through workflow"
+    properties:
+      approverComments:
+        type: "string"
+        description: "Approver comments"
+        required: true
+        validation:
+          - min_length: 10
+          - max_length: 1000
+      conditionalApproval:
+        type: "boolean"
+        description: "Whether this is conditional approval"
+        required: false
+        default: false
+      conditions:
+        type: "List<string>"
+        description: "Approval conditions"
+        required: false
+      overrideReason:
+        type: "string"
+        description: "Reason for override if applicable"
+        required: false
+
+  PolicyPageResponse:
+    description: "Paginated policy response with analytics"
+    properties:
+      content:
+        type: "List<PolicyResponse>"
+        description: "List of policies"
+      pageable:
+        type: "PageableInfo"
+        description: "Pagination information"
+      totalElements:
+        type: "long"
+        description: "Total number of policies"
+      totalPages:
+        type: "int"
+        description: "Total number of pages"
+      analytics:
+        type: "PolicySummaryAnalytics"
+        description: "Summary analytics for the result set"
+
+  PolicyAnalyticsResponse:
+    description: "Policy analytics and insights"
+    properties:
+      totalPolicies:
+        type: "long"
+        description: "Total number of policies"
+      totalCoverage:
+        type: "BigDecimal"
+        description: "Total coverage amount"
+      totalPremiums:
+        type: "BigDecimal"
+        description: "Total premium collected"
+      averagePremium:
+        type: "BigDecimal"
+        description: "Average premium amount"
+      policyTypeDistribution:
+        type: "Map<String, Long>"
+        description: "Distribution by policy type"
+      riskLevelDistribution:
+        type: "Map<String, Long>"
+        description: "Distribution by risk level"
+      statusDistribution:
+        type: "Map<String, Long>"
+        description: "Distribution by status"
+      renewalRate:
+        type: "BigDecimal"
+        description: "Policy renewal rate percentage"
+      lapsedPolicies:
+        type: "long"
+        description: "Number of lapsed policies"
+      pendingApprovals:
+        type: "long"
+        description: "Policies pending approval"
+      expiringNextMonth:
+        type: "long"
+        description: "Policies expiring next month"
+      trends:
+        type: "Map<String, Object>"
+        description: "Trend analysis data"
+
+# Business Rules and Complex Logic
+business_rules:
+  - name: "Age-Based Premium Calculation"
+    description: "Premium calculation based on age brackets with exponential scaling"
+    validation: "Premium = basePremium * ageMultiplier[ageBracket] * riskScore"
+    implementation: |
+      if (age < 25) multiplier = 1.2
+      else if (age < 35) multiplier = 1.0
+      else if (age < 45) multiplier = 1.3
+      else if (age < 55) multiplier = 1.7
+      else if (age < 65) multiplier = 2.2
+      else multiplier = 3.5
+    category: "PREMIUM_CALCULATION"
+    
+  - name: "Risk Score Calculation"
+    description: "Complex risk score calculation using weighted factors"
+    validation: "Risk Score = Σ(factor_weight * factor_score) / total_weights"
+    implementation: |
+      healthWeight = 0.25, smokingWeight = 0.20, occupationWeight = 0.15,
+      drivingWeight = 0.15, creditWeight = 0.10, locationWeight = 0.10, hobbiesWeight = 0.05
+      finalScore = min(100, max(0, weightedSum))
+    category: "RISK_ASSESSMENT"
+    
+  - name: "Multi-Factor Authentication for High-Value Policies"
+    description: "Policies over $1M require enhanced authentication"
+    validation: "coverageAmount > 1000000 requires MFA and document verification"
+    implementation: |
+      if (coverageAmount > 1000000) {
+        requireMFA = true;
+        requireDocumentVerification = true;
+        requireMedicalExam = true;
+        approvalLevel = "SENIOR_UNDERWRITER";
+      }
+    category: "SECURITY"
+    
+  - name: "Dynamic Premium Adjustment"
+    description: "Premium adjusts based on payment history and claims"
+    validation: "Premium can be adjusted ±25% based on performance factors"
+    implementation: |
+      baseAdjustment = 1.0;
+      if (paymentHistory.latePayments > 2) baseAdjustment += 0.15;
+      if (claimsHistory.count > averageForType) baseAdjustment += 0.10;
+      if (loyaltyYears > 5) baseAdjustment -= 0.05;
+      adjustment = max(0.75, min(1.25, baseAdjustment));
+    category: "PREMIUM_CALCULATION"
+    
+  - name: "Beneficiary Percentage Validation"
+    description: "Primary and contingent beneficiaries must total 100%"
+    validation: "Sum of primary beneficiaries = 100% AND sum of contingent beneficiaries = 100%"
+    implementation: |
+      primaryTotal = primaryBeneficiaries.stream().mapToDouble(b -> b.percentage).sum();
+      contingentTotal = contingentBeneficiaries.stream().mapToDouble(b -> b.percentage).sum();
+      if (primaryTotal != 100.0 || (hasContingent && contingentTotal != 100.0)) throw validation error;
+    category: "BENEFICIARY_VALIDATION"
+    
+  - name: "Geographic Risk Assessment"
+    description: "Location-based risk calculation for natural disasters"
+    validation: "Risk multiplier based on ZIP code risk zones"
+    implementation: |
+      riskZones = {floodZone: multiplier, earthquakeZone: multiplier, hurricaneZone: multiplier};
+      locationRisk = 1.0;
+      for (zone in address.riskZones) locationRisk *= zone.multiplier;
+      locationRisk = min(3.0, locationRisk);
+    category: "RISK_ASSESSMENT"
+    
+  - name: "Policy Term Validation"
+    description: "Policy term restrictions based on age and type"
+    validation: "Maximum term = min(policyTypeMaxTerm, (85 - currentAge))"
+    implementation: |
+      maxTermByType = {LIFE: 50, HEALTH: 10, AUTO: 1, HOME: 5, BUSINESS: 10};
+      maxTermByAge = 85 - currentAge;
+      allowedTerm = min(maxTermByType[policyType], maxTermByAge);
+      if (requestedTerm > allowedTerm) throw validation error;
+    category: "POLICY_VALIDATION"
+    
+  - name: "Automatic Policy Renewal Logic"
+    description: "Complex renewal decision based on multiple factors"
+    validation: "Auto-renewal eligibility based on payment history, claims, and risk changes"
+    implementation: |
+      autoRenewEligible = paymentHistory.onTimeRate > 0.9 && 
+                         claimsHistory.count < maxClaimsForType &&
+                         currentRiskScore <= originalRiskScore * 1.2 &&
+                         !hasLifeChangingEvents;
+    category: "RENEWAL_LOGIC"
+    
+  - name: "Premium Discount Calculation"
+    description: "Multi-tier discount system for loyal customers"
+    validation: "Discounts based on loyalty years, multiple policies, and clean record"
+    implementation: |
+      loyaltyDiscount = min(0.15, loyaltyYears * 0.02);
+      multiPolicyDiscount = min(0.10, (activePolicies - 1) * 0.03);
+      cleanRecordDiscount = (claims.count == 0 && violations.count == 0) ? 0.05 : 0.0;
+      totalDiscount = min(0.25, loyaltyDiscount + multiPolicyDiscount + cleanRecordDiscount);
+    category: "DISCOUNT_CALCULATION"
+    
+  - name: "Workflow State Transitions"
+    description: "Complex workflow state machine for policy lifecycle"
+    validation: "Valid state transitions based on current state and user role"
+    implementation: |
+      transitions = {
+        DRAFT -> [PENDING_APPROVAL, CANCELLED],
+        PENDING_APPROVAL -> [ACTIVE, REQUIRES_REVISION, DECLINED],
+        ACTIVE -> [SUSPENDED, LAPSED, EXPIRED, CANCELLED],
+        SUSPENDED -> [ACTIVE, CANCELLED],
+        LAPSED -> [ACTIVE, CANCELLED],
+        EXPIRED -> [RENEWED, CANCELLED]
+      };
+      validateTransition(currentState, newState, userRole);
+    category: "WORKFLOW"
+    
+  - name: "Coverage Limit Validation"
+    description: "Coverage limits based on income verification and needs analysis"
+    validation: "Maximum coverage = min(income * 10, needsAnalysisAmount, policyTypeMaximum)"
+    implementation: |
+      incomeBasedLimit = verifiedIncome * 10;
+      needsBasedLimit = calculateNeedsAnalysis(dependents, debts, expenses);
+      typeBasedLimit = policyTypeLimits[policyType];
+      maxCoverage = min(incomeBasedLimit, needsBasedLimit, typeBasedLimit);
+    category: "COVERAGE_VALIDATION"
+    
+  - name: "Medical Exam Requirement Logic"
+    description: "Determine medical exam requirements based on age, coverage, and risk"
+    validation: "Medical exam required based on complex decision matrix"
+    implementation: |
+      examRequired = (age > 50 && coverage > 500000) ||
+                    (age > 40 && coverage > 1000000) ||
+                    (age > 30 && coverage > 2000000) ||
+                    (riskScore > 75) ||
+                    (hasHighRiskMedicalHistory);
+    category: "UNDERWRITING"
+    
+  - name: "Payment Frequency Impact on Premium"
+    description: "Payment frequency affects total annual premium"
+    validation: "Annual premium varies by payment frequency with processing fees"
+    implementation: |
+      frequencyMultipliers = {ANNUAL: 1.0, SEMI_ANNUAL: 1.02, QUARTERLY: 1.04, MONTHLY: 1.08};
+      adjustedPremium = basePremium * frequencyMultipliers[paymentFrequency];
+    category: "PREMIUM_CALCULATION"
+
+# Error Handling and Exception Management
+error_responses:
+  PolicyNotFoundException:
+    code: "POLICY_NOT_FOUND"
+    message: "Policy with ID {id} not found"
+    http_status: 404
+    
+  PolicyNumberAlreadyExistsException:
+    code: "POLICY_NUMBER_EXISTS"
+    message: "Policy with number {policyNumber} already exists"
+    http_status: 409
+    
+  InvalidDateRangeException:
+    code: "INVALID_DATE_RANGE"
+    message: "Policy end date must be after start date"
+    http_status: 400
+    
+  InvalidBeneficiaryPercentageException:
+    code: "INVALID_BENEFICIARY_PERCENTAGE"
+    message: "Total beneficiary percentages must equal 100%"
+    http_status: 400
+    
+  PolicyValidationException:
+    code: "POLICY_VALIDATION_ERROR"
+    message: "Policy data validation failed: {details}"
+    http_status: 400
+    
+  RiskAssessmentException:
+    code: "RISK_ASSESSMENT_FAILED"
+    message: "Risk assessment could not be completed: {reason}"
+    http_status: 422
+    
+  PremiumCalculationException:
+    code: "PREMIUM_CALCULATION_ERROR"
+    message: "Premium calculation failed: {details}"
+    http_status: 422
+    
+  WorkflowViolationException:
+    code: "WORKFLOW_VIOLATION"
+    message: "Invalid workflow transition from {currentState} to {newState}"
+    http_status: 422
+    
+  InsufficientCoverageException:
+    code: "INSUFFICIENT_COVERAGE"
+    message: "Requested coverage amount {amount} exceeds maximum allowed {maxAmount}"
+    http_status: 422
+    
+  UnderwritingDeclinedException:
+    code: "UNDERWRITING_DECLINED"
+    message: "Policy application declined due to underwriting guidelines"
+    http_status: 422
+    
+  MedicalExamRequiredException:
+    code: "MEDICAL_EXAM_REQUIRED"
+    message: "Medical examination required for this policy application"
+    http_status: 202
+    
+  DocumentationRequiredException:
+    code: "DOCUMENTATION_REQUIRED"
+    message: "Additional documentation required: {documentList}"
+    http_status: 202
+    
+  PaymentProcessingException:
+    code: "PAYMENT_PROCESSING_ERROR"
+    message: "Payment processing failed: {reason}"
+    http_status: 402
+    
+  PolicyLapsedException:
+    code: "POLICY_LAPSED"
+    message: "Policy has lapsed due to non-payment"
+    http_status: 410
+    
+  GeographicRestrictionException:
+    code: "GEOGRAPHIC_RESTRICTION"
+    message: "Policy type not available in specified location: {location}"
+    http_status: 422
+
+# Security Configuration
+security:
+  authentication:
+    type: "JWT"
+    header: "Authorization"
+    prefix: "Bearer "
+  authorization:
+    roles:
+      - "POLICY_ADMIN"
+      - "POLICY_MANAGER"
+      - "POLICY_VIEWER"
+    permissions:
+      create_policy: ["POLICY_ADMIN", "POLICY_MANAGER"]
+      update_policy: ["POLICY_ADMIN", "POLICY_MANAGER"]
+      view_policy: ["POLICY_ADMIN", "POLICY_MANAGER", "POLICY_VIEWER"]
+      delete_policy: ["POLICY_ADMIN"]
+
+# Audit Configuration
+audit:
+  enabled: true
+  fields:
+    - "createdAt"
+    - "updatedAt"
+    - "createdBy"
+    - "updatedBy"
+  events:
+    - "POLICY_CREATED"
+    - "POLICY_UPDATED"
+    - "POLICY_VIEWED"
+    - "POLICY_STATUS_CHANGED"
+
+# Integration Points and External Services
+integrations:
+  - name: "Payment Service"
+    description: "Integration for premium payment processing with multiple providers"
+    endpoint: "/api/v1/payments"
+    methods: ["POST", "GET", "PUT"]
+    features:
+      - "Credit card processing"
+      - "ACH transfers"
+      - "Payment scheduling"
+      - "Recurring payments"
+      - "Payment failure handling"
+    
+  - name: "Notification Service"
+    description: "Multi-channel notification system for policy events"
+    endpoint: "/api/v1/notifications"
+    methods: ["POST"]
+    features:
+      - "Email notifications"
+      - "SMS alerts"
+      - "Push notifications"
+      - "Premium due reminders"
+      - "Policy expiration alerts"
+      - "Claim status updates"
+    
+  - name: "Document Service"
+    description: "Document generation and digital signature integration"
+    endpoint: "/api/v1/documents"
+    methods: ["POST", "GET", "PUT"]
+    features:
+      - "Policy document generation"
+      - "Digital signatures"
+      - "Document storage"
+      - "Version control"
+      - "Compliance tracking"
+    
+  - name: "Credit Bureau Service"
+    description: "Credit score and background verification"
+    endpoint: "/api/v1/credit-check"
+    methods: ["POST", "GET"]
+    features:
+      - "Credit score retrieval"
+      - "Identity verification"
+      - "Background checks"
+      - "Fraud detection"
+    
+  - name: "Medical Information Bureau"
+    description: "Medical history and prescription database access"
+    endpoint: "/api/v1/medical-records"
+    methods: ["POST", "GET"]
+    features:
+      - "Medical history lookup"
+      - "Prescription database"
+      - "Health risk indicators"
+      - "Medical exam results"
+    
+  - name: "Motor Vehicle Records"
+    description: "Driving record and vehicle information lookup"
+    endpoint: "/api/v1/mvr"
+    methods: ["POST", "GET"]
+    features:
+      - "Driving record retrieval"
+      - "Vehicle history"
+      - "License verification"
+      - "Violation history"
+    
+  - name: "Property Data Service"
+    description: "Property valuation and risk assessment"
+    endpoint: "/api/v1/property"
+    methods: ["POST", "GET"]
+    features:
+      - "Property valuation"
+      - "Natural disaster risk"
+      - "Crime statistics"
+      - "Construction details"
+    
+  - name: "Actuarial Service"
+    description: "Advanced actuarial calculations and modeling"
+    endpoint: "/api/v1/actuarial"
+    methods: ["POST"]
+    features:
+      - "Mortality tables"
+      - "Probability calculations"
+      - "Risk modeling"
+      - "Premium optimization"
+
+# Workflow Configuration
+workflow:
+  policy_creation:
+    steps:
+      - name: "Initial Application"
+        description: "Customer submits initial application"
+        required_fields: ["basic_info", "coverage_details", "risk_factors"]
+        next_steps: ["risk_assessment", "premium_calculation"]
+        
+      - name: "Risk Assessment"
+        description: "Automated and manual risk evaluation"
+        dependencies: ["credit_check", "medical_records", "driving_record"]
+        decision_points: ["approve", "require_medical_exam", "decline"]
+        
+      - name: "Premium Calculation"
+        description: "Calculate final premium based on risk assessment"
+        inputs: ["risk_score", "coverage_amount", "policy_type"]
+        outputs: ["base_premium", "total_premium", "payment_schedule"]
+        
+      - name: "Underwriting Review"
+        description: "Manual underwriting for complex cases"
+        triggers: ["high_risk_score", "large_coverage", "unusual_circumstances"]
+        approvers: ["senior_underwriter", "medical_director"]
+        
+      - name: "Final Approval"
+        description: "Final policy approval and activation"
+        requirements: ["all_documents", "first_premium_payment", "digital_signature"]
+        
+  policy_renewal:
+    steps:
+      - name: "Renewal Eligibility Check"
+        description: "Verify policy is eligible for renewal"
+        validations: ["payment_history", "claims_history", "age_limits"]
+        
+      - name: "Risk Re-assessment"
+        description: "Update risk profile for renewal"
+        factors: ["age_change", "life_events", "health_updates"]
+        
+      - name: "Premium Adjustment"
+        description: "Calculate new premium for renewal term"
+        considerations: ["inflation", "risk_changes", "loyalty_discounts"]
+        
+      - name: "Renewal Offer"
+        description: "Present renewal terms to policyholder"
+        contents: ["new_premium", "coverage_changes", "terms_updates"]
+
+# Advanced Features Configuration
+advanced_features:
+  machine_learning:
+    risk_prediction:
+      enabled: true
+      models: ["gradient_boosting", "neural_network", "ensemble"]
+      features: ["demographic", "behavioral", "external_data"]
+      update_frequency: "monthly"
+      
+    fraud_detection:
+      enabled: true
+      algorithms: ["anomaly_detection", "pattern_recognition"]
+      confidence_threshold: 0.85
+      alert_mechanisms: ["email", "dashboard", "api_webhook"]
+      
+    premium_optimization:
+      enabled: true
+      objectives: ["profit_maximization", "risk_minimization", "market_competition"]
+      constraints: ["regulatory_limits", "business_rules"]
+      
+  blockchain_integration:
+    smart_contracts:
+      enabled: false
+      use_cases: ["automated_claims", "parametric_insurance"]
+      platforms: ["ethereum", "hyperledger"]
+      
+    immutable_records:
+      enabled: true
+      stored_data: ["policy_changes", "claims_history", "premium_payments"]
+      
+  iot_integration:
+    telematics:
+      enabled: true
+      policy_types: ["AUTO"]
+      data_sources: ["gps_tracking", "driving_behavior", "vehicle_diagnostics"]
+      
+    home_monitoring:
+      enabled: true
+      policy_types: ["HOME"]
+      sensors: ["smoke_detectors", "water_sensors", "security_systems"]
+      
+  api_ecosystem:
+    rate_limiting:
+      requests_per_minute: 1000
+      burst_capacity: 2000
+      throttling_strategy: "sliding_window"
+      
+    versioning:
+      strategy: "header_based"
+      supported_versions: ["v1", "v2"]
+      deprecation_policy: "12_months_notice"
+      
+    authentication:
+      methods: ["jwt", "oauth2", "api_key"]
+      token_expiry: "1_hour"
+      refresh_token_expiry: "7_days"
+
+# Performance Requirements and SLA
+performance:
+  response_time:
+    get_policy: "< 150ms"
+    create_policy: "< 2000ms"
+    update_policy: "< 1000ms"
+    list_policies: "< 500ms"
+    calculate_premium: "< 3000ms"
+    assess_risk: "< 5000ms"
+    approve_policy: "< 1000ms"
+    renew_policy: "< 2000ms"
+    policy_analytics: "< 2000ms"
+  throughput:
+    target: "2000 requests/minute"
+    peak: "5000 requests/minute"
+    burst: "10000 requests/minute"
+  availability:
+    uptime_sla: "99.9%"
+    planned_downtime: "< 4 hours/month"
+    disaster_recovery_rto: "< 1 hour"
+    disaster_recovery_rpo: "< 15 minutes"
+  scalability:
+    concurrent_users: 10000
+    horizontal_scaling: "auto"
+    database_scaling: "read_replicas"
+    cache_layers: ["redis", "application_cache"]
+
+# Monitoring and Observability
+monitoring:
+  metrics:
+    business_metrics:
+      - "policies_created_per_hour"
+      - "average_premium_calculation_time"
+      - "risk_assessment_accuracy"
+      - "approval_rate"
+      - "renewal_rate"
+      - "customer_satisfaction_score"
+    technical_metrics:
+      - "api_response_time"
+      - "database_query_performance"
+      - "cache_hit_ratio"
+      - "error_rate"
+      - "cpu_utilization"
+      - "memory_usage"
+      - "disk_io"
+      - "network_throughput"
+  alerting:
+    thresholds:
+      response_time_p95: "2000ms"
+      error_rate: "1%"
+      availability: "99.5%"
+      database_connections: "80%"
+      memory_usage: "85%"
+    channels:
+      - "pagerduty"
+      - "slack"
+      - "email"
+    escalation:
+      level_1: "5_minutes"
+      level_2: "15_minutes"
+      level_3: "30_minutes"
+  logging:
+    levels: ["ERROR", "WARN", "INFO", "DEBUG"]
+    structured_logging: true
+    log_retention: "90_days"
+    sensitive_data_masking: true
+    audit_trail: true
+  tracing:
+    distributed_tracing: true
+    sampling_rate: "10%"
+    trace_retention: "7_days"
+
+# Data Management and Compliance
+data_management:
+  encryption:
+    at_rest: "AES-256"
+    in_transit: "TLS 1.3"
+    key_management: "AWS KMS"
+    pii_encryption: "field_level"
+  backup:
+    frequency: "every_4_hours"
+    retention: "7_years"
+    cross_region: true
+    backup_testing: "monthly"
+  archival:
+    inactive_policies: "after_7_years"
+    compressed_storage: true
+    retrieval_sla: "< 24_hours"
+  compliance:
+    regulations: ["GDPR", "CCPA", "HIPAA", "SOX"]
+    data_residency: "configurable"
+    right_to_erasure: true
+    consent_management: true
+    privacy_impact_assessment: "completed"
+
+# Testing Strategy
+testing:
+  unit_tests:
+    coverage_threshold: "90%"
+    frameworks: ["JUnit", "Mockito"]
+    automated: true
+  integration_tests:
+    coverage_threshold: "80%"
+    test_environments: ["staging", "uat"]
+    automated: true
+  performance_tests:
+    load_testing: "continuous"
+    stress_testing: "weekly"
+    tools: ["JMeter", "Gatling"]
+  security_tests:
+    vulnerability_scanning: "automated"
+    penetration_testing: "quarterly"
+    dependency_scanning: "automated"
+  business_logic_tests:
+    risk_calculation_scenarios: 50
+    premium_calculation_scenarios: 100
+    workflow_scenarios: 30
+    edge_case_scenarios: 25

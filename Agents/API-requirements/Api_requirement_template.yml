@@ -1,0 +1,317 @@
+metadata:
+  api_name: ${API_NAME}
+  version: 1.0.0
+  description: ${API_DESCRIPTION}
+  team: ${TEAM_NAME}
+  owner: ${OWNER_EMAIL}
+
+configuration:
+  language: Java  # Options: Java | NodeJS | .NET
+  framework: Spring Boot  # Options: Spring Boot | Express.js | ASP.NET Core
+  database: PostgreSQL  # Options: PostgreSQL | MongoDB | MySQL
+  caching: Redis  # Options: Redis | Memcached | None
+  messaging: Kafka  # Options: Kafka | RabbitMQ | None
+
+api_contract:
+  format: OpenAPI
+  version: 3.0.1
+  base_path: /api/v1
+  security:
+    - type: JWT
+      scopes: [read, write]
+    - type: API_KEY
+      header: X-API-Key
+  
+  endpoints:
+    - path: /customers
+      method: POST
+      summary: Create a new customer profile
+      description: |
+        Creates a new customer profile in the system.
+        Validates all required fields and checks for duplicate email.
+      tags: 
+        - Customers
+      security:
+        - JWT: [write]
+      request:
+        content_type: application/json
+        required_headers:
+          - X-Correlation-ID
+        schema:
+          type: object
+          required: [firstName, lastName, email]
+          properties:
+            firstName:
+              type: string
+              minLength: 2
+              maxLength: 50
+            lastName:
+              type: string
+              minLength: 2
+              maxLength: 50
+            email:
+              type: string
+              format: email
+            phone:
+              type: string
+              pattern: "^\\+?[1-9]\\d{1,14}$"
+      response:
+        success:
+          status: 201
+          content_type: application/json
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              message:
+                type: string
+              timestamp:
+                type: string
+                format: date-time
+        errors:
+          - status: 400
+            description: Invalid input
+            schema:
+              type: object
+              properties:
+                code: string
+                message: string
+                details: array
+          - status: 409
+            description: Email already exists
+            schema:
+              type: object
+              properties:
+                code: string
+                message: string
+
+    - path: /customers/{id}
+      method: GET
+      summary: Retrieve customer details by ID
+      path_parameters:
+        id: string
+      response:
+        status: 200
+        schema:
+          id: string
+          firstName: string
+          lastName: string
+          email: string
+          phone: string
+
+business_logic:
+  workflows:
+    - endpoint: POST /customers
+      steps:
+        - name: Input Validation
+          description: Validate all required fields and formats
+          validations:
+            - field: firstName
+              rules: [required, minLength=2, maxLength=50, alphaOnly]
+            - field: lastName
+              rules: [required, minLength=2, maxLength=50, alphaOnly]
+            - field: email
+              rules: [required, validEmail, maxLength=255]
+            - field: phone
+              rules: [optional, validPhoneNumber]
+        
+        - name: Duplicate Check
+          description: Ensure email is not already registered
+          query:
+            type: uniqueCheck
+            field: email
+            table: customers
+        
+        - name: Data Processing
+          description: Process and sanitize input data
+          actions:
+            - trim all string fields
+            - normalize email to lowercase
+            - format phone number to E.164
+        
+        - name: Database Operation
+          description: Create new customer record
+          transaction:
+            - operation: insert
+              table: customers
+              data: 
+                - mapped_fields: [firstName, lastName, email, phone]
+                - generated_fields: [id, created_at, updated_at]
+        
+        - name: Event Publication
+          description: Publish customer created event
+          event:
+            type: CUSTOMER_CREATED
+            payload: [id, email]
+            
+      error_handling:
+        validation_errors:
+          response: 400
+          logging: warn
+          metrics: increment 'validation_failures'
+        
+        duplicate_email:
+          response: 409
+          logging: info
+          metrics: increment 'duplicate_attempts'
+        
+        system_errors:
+          response: 500
+          logging: error
+          metrics: increment 'system_errors'
+          alert: true
+
+  domain_rules:
+    - rule: Email Uniqueness
+      description: Each customer must have a unique email address
+      enforcement: database unique constraint
+    
+    - rule: Name Requirements
+      description: First and last names must be valid alphabetic characters
+      enforcement: application validation
+    
+    - rule: Phone Format
+      description: Phone numbers must follow E.164 format if provided
+      enforcement: application validation
+
+  data_access:
+    read_operations:
+      - name: getCustomerByEmail
+        type: query
+        indexes: [email_idx]
+      
+      - name: getCustomerById
+        type: query
+        indexes: [primary_key]
+    
+    write_operations:
+      - name: createCustomer
+        type: transaction
+        consistency: strong
+        
+    caching:
+      - type: Redis
+        keys: [customer:${id}]
+        ttl: 3600
+        invalidation:
+          - on: customer_updated
+          - on: customer_deleted
+
+testing:
+  unit_tests:
+    domain_logic:
+      - test: validateCustomerInput
+        scenarios:
+          - name: valid_input
+            input: {firstName: "John", lastName: "Doe", email: "john@example.com"}
+            expected: {isValid: true}
+          - name: invalid_email
+            input: {firstName: "John", lastName: "Doe", email: "invalid-email"}
+            expected: {isValid: false, errors: ["invalid email format"]}
+    
+    services:
+      - test: createCustomerService
+        scenarios:
+          - name: successful_creation
+            given: {email_exists: false}
+            when: {createCustomer: {...validCustomerData}}
+            then: {customerCreated: true, eventPublished: true}
+          - name: duplicate_email
+            given: {email_exists: true}
+            when: {createCustomer: {...validCustomerData}}
+            then: {throws: DuplicateEmailError}
+
+  integration_tests:
+    api_endpoints:
+      - test: POST /api/v1/customers
+        scenarios:
+          - name: valid_customer_creation
+            request:
+              headers:
+                Content-Type: application/json
+                X-Correlation-ID: ${uuid}
+              body:
+                firstName: "John"
+                lastName: "Doe"
+                email: "john.doe@example.com"
+                phone: "+1234567890"
+            response:
+              status: 201
+              body:
+                id: "${uuid_pattern}"
+                message: "Customer created successfully"
+          
+          - name: duplicate_email_rejection
+            prerequisites:
+              - create_customer: {email: "john.doe@example.com"}
+            request:
+              body:
+                firstName: "Jane"
+                lastName: "Doe"
+                email: "john.doe@example.com"
+            response:
+              status: 409
+              body:
+                code: "DUPLICATE_EMAIL"
+                message: "Email already registered"
+
+    database:
+      - test: customer_repository
+        scenarios:
+          - name: successful_save
+            given: {clean_database: true}
+            when: {save_customer: {...validCustomerData}}
+            then: {record_exists: true, data_matches: true}
+
+  performance_tests:
+    scenarios:
+      - name: customer_creation_load
+        type: load_test
+        duration: 5m
+        target_rps: 100
+        success_criteria:
+          - p95_latency_ms: 200
+          - error_rate: 0.1%
+      
+      - name: customer_retrieval_stress
+        type: stress_test
+        stages:
+          - duration: 2m
+            target_rps: 50
+          - duration: 5m
+            target_rps: 200
+          - duration: 2m
+            target_rps: 50
+        success_criteria:
+          - p99_latency_ms: 500
+          - error_rate: 1%
+
+monitoring:
+  metrics:
+    - name: customer_creation_rate
+      type: counter
+      labels: [status, source]
+    
+    - name: customer_creation_latency
+      type: histogram
+      buckets: [10, 50, 100, 200, 500]
+    
+    - name: validation_errors
+      type: counter
+      labels: [field, error_type]
+
+  alerts:
+    - name: high_error_rate
+      condition: error_rate > 5% for 5m
+      severity: critical
+      notification: slack#incidents
+
+  logging:
+    required_fields:
+      - correlation_id
+      - customer_id
+      - request_path
+      - status_code
+      - duration_ms

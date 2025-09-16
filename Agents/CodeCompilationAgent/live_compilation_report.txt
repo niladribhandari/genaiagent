@@ -1,0 +1,24 @@
+============================================================
+CODE COMPILATION REPORT
+============================================================
+
+Project Path: /Users/niladrib/WorkingFolder/genaiagent/CodeCompilation/sample-maven-project
+Project Type: java_springboot
+Compilation Status: SUCCESS
+Compilation Time: 16.06 seconds
+
+SUMMARY:
+  Total Issues: 0
+  Errors: 0
+  Warnings: 0
+  Build Successful: True
+
+BUILD INFORMATION:
+----------------------------------------
+  build_tool: maven
+  goals: ['clean', 'compile']
+  return_code: 0
+
+Output Path: /Users/niladrib/WorkingFolder/genaiagent/CodeCompilation/sample-maven-project/target
+
+============================================================

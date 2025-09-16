@@ -1,0 +1,302 @@
+language: JavaScript
+framework: Express.js
+version: 4.x
+description: Clean Architecture based Express.js API with TypeScript and Domain-Driven Design
+
+project_info:
+  name: ${API_NAME}-service
+  description: ${API_DESCRIPTION}
+  author: ${AUTHOR}
+  license: MIT
+
+templates:
+  root:
+    - package.json
+    - tsconfig.json
+    - .eslintrc.js
+    - .prettierrc
+    - .env.example
+    - .gitignore
+    - README.md
+    - Dockerfile
+    - docker-compose.yml
+    - jest.config.js
+    
+  documentation:
+    - docs/openapi.yaml
+    - docs/postman-collection.json
+    - docs/architecture.md
+    
+  src:
+    core:
+      - src/domain/entities/${ENTITY_NAME}.ts
+      - src/domain/value-objects/${VALUE_OBJECT_NAME}.ts
+      - src/domain/events/${ENTITY_NAME}Event.ts
+      - src/domain/interfaces/repositories/I${ENTITY_NAME}Repository.ts
+      - src/domain/interfaces/services/I${ENTITY_NAME}Service.ts
+    
+    application:
+      - src/application/use-cases/${USE_CASE_NAME}UseCase.ts
+      - src/application/dtos/${ENTITY_NAME}Dto.ts
+      - src/application/mappers/${ENTITY_NAME}Mapper.ts
+      - src/application/interfaces/I${USE_CASE_NAME}UseCase.ts
+    
+    infrastructure:
+      - src/infrastructure/config/index.ts
+      - src/infrastructure/database/mongoose/schemas/${ENTITY_NAME}Schema.ts
+      - src/infrastructure/database/mongoose/repositories/${ENTITY_NAME}Repository.ts
+      - src/infrastructure/logging/logger.ts
+      - src/infrastructure/messaging/kafka/producer.ts
+      - src/infrastructure/messaging/kafka/consumer.ts
+    
+    interfaces:
+      - src/interfaces/http/routes/${ENTITY_NAME}Routes.ts
+      - src/interfaces/http/controllers/${ENTITY_NAME}Controller.ts
+      - src/interfaces/http/middlewares/auth.middleware.ts
+      - src/interfaces/http/middlewares/error.middleware.ts
+      - src/interfaces/http/middlewares/validation.middleware.ts
+      - src/interfaces/http/validators/${ENTITY_NAME}Validator.ts
+    
+    common:
+      - src/common/exceptions/AppError.ts
+      - src/common/utils/pagination.ts
+      - src/common/utils/security.ts
+      - src/common/types/index.ts
+    
+  tests:
+    unit:
+      - tests/unit/domain/${ENTITY_NAME}.test.ts
+      - tests/unit/application/${USE_CASE_NAME}UseCase.test.ts
+    integration:
+      - tests/integration/interfaces/http/${ENTITY_NAME}Controller.test.ts
+      - tests/integration/infrastructure/database/${ENTITY_NAME}Repository.test.ts
+    e2e:
+      - tests/e2e/${ENTITY_NAME}API.test.ts
+    common:
+      - tests/fixtures/${ENTITY_NAME}Fixtures.ts
+      - tests/helpers/TestDatabase.ts
+
+project_structure:
+  src:
+    domain:
+      - entities/
+      - value-objects/
+      - events/
+      - interfaces/
+        - repositories/
+        - services/
+    application:
+      - use-cases/
+      - dtos/
+      - mappers/
+      - interfaces/
+    infrastructure:
+      - config/
+      - database/
+        - mongoose/
+          - schemas/
+          - repositories/
+      - logging/
+      - messaging/
+        - kafka/
+    interfaces:
+      - http/
+        - routes/
+        - controllers/
+        - middlewares/
+        - validators/
+    common:
+      - exceptions/
+      - utils/
+      - types/
+  tests:
+    - unit/
+    - integration/
+    - e2e/
+    - fixtures/
+    - helpers/
+  docs:
+    - api/
+    - architecture/
+
+code_standards:
+  architecture:
+    - Follow Clean Architecture principles
+    - Implement Domain-Driven Design patterns
+    - Use dependency injection and IoC
+    - Keep domain logic framework-independent
+    
+  typescript:
+    - Use strict TypeScript configuration
+    - Define proper interfaces and types
+    - Use enums for constants
+    - Leverage TypeScript decorators
+    
+  naming:
+    - Use PascalCase for classes and interfaces
+    - Use camelCase for methods and variables
+    - Use UPPER_CASE for constants
+    - Prefix interfaces with 'I'
+    - Suffix implementations with purpose
+    
+  async:
+    - Use async/await for all asynchronous code
+    - Proper error handling with try/catch
+    - Use Promise.all for parallel operations
+    - Implement proper timeout handling
+    
+  error_handling:
+    - Create custom error classes
+    - Implement global error handler
+    - Use meaningful error messages
+    - Include error codes and types
+    
+  documentation:
+    - JSDoc for all public methods
+    - OpenAPI/Swagger for API endpoints
+    - README for setup and usage
+    - Architecture documentation
+    
+  testing:
+    - Write meaningful test descriptions
+    - Follow AAA pattern
+    - Mock external dependencies
+    - Use proper test fixtures
+    
+  security:
+    - Implement proper authentication
+    - Use input validation
+    - Implement rate limiting
+    - Follow OWASP guidelines
+    
+  logging:
+    - Use structured logging
+    - Include correlation IDs
+    - Log meaningful events
+    - Different log levels
+  - Use async error handling with try/catch blocks
+  - Use [Authorize] middleware for secured endpoints
+  - Use [AllowAnonymous] for public endpoints
+  - Use [Produces] attribute to specify response content type
+  - Use [ProducesResponseType] for action methods to specify response types
+  - Use [ApiController] attribute for automatic model validation
+  - Use [Route] attribute for defining routes
+  - Use [HttpGet], [HttpPost], [HttpPut], [HttpDelete] for HTTP methods
+  - Use [ApiResponse] for documenting responses
+  - Use [ApiOperation] for documenting endpoints
+  - Use [ApiParam] for documenting parameters
+
+dependencies:
+  core:
+    - express: ^4.18.2
+    - typescript: ^5.0.0
+    - cors: ^2.8.5
+    - helmet: ^7.0.0
+    - compression: ^1.7.4
+    - dotenv: ^16.0.0
+  
+  validation:
+    - joi: ^17.9.0
+    - class-validator: ^0.14.0
+    - class-transformer: ^0.5.0
+  
+  database:
+    - mongoose: ^7.0.0
+    - typeorm: ^0.3.0
+    - mongodb: ^5.0.0
+    
+  logging:
+    - winston: ^3.8.0
+    - morgan: ^1.10.0
+    
+  documentation:
+    - swagger-jsdoc: ^6.2.0
+    - swagger-ui-express: ^4.6.0
+    
+  testing:
+    - jest: ^29.0.0
+    - ts-jest: ^29.0.0
+    - supertest: ^6.3.0
+    - faker: ^6.6.6
+    
+  development:
+    - nodemon: ^2.0.22
+    - eslint: ^8.40.0
+    - prettier: ^2.8.0
+    - husky: ^8.0.0
+
+api_conventions:
+  routing:
+    - RESTful endpoints
+    - Versioned routes (/api/v1/...)
+    - Resource-based naming
+    - Proper HTTP methods
+  
+  responses:
+    - Consistent response format
+    - Proper status codes
+    - Error response structure
+    - Pagination format
+  
+  security:
+    - JWT authentication
+    - Role-based authorization
+    - Rate limiting
+    - Input sanitization
+  
+  validation:
+    - Request body validation
+    - Query params validation
+    - Path params validation
+    - Custom validators
+
+persistence:
+  patterns:
+    - Repository pattern
+    - Unit of Work pattern
+    - Data Mapper pattern
+  practices:
+    - Use transactions
+    - Implement soft delete
+    - Handle migrations
+    - Connection pooling
+
+monitoring:
+  health:
+    - Health check endpoints
+    - Database connectivity
+    - External services status
+  metrics:
+    - Request duration
+    - Error rates
+    - Memory usage
+    - Custom metrics
+  logging:
+    - Request/Response logging
+    - Error logging
+    - Performance logging
+    - Audit logging
+  tracing:
+    - Request tracing
+    - Distributed tracing
+    - Performance profiling
+
+testing:
+  types:
+    unit:
+      - Domain logic
+      - Use case tests
+      - Service tests
+    integration:
+      - API endpoints
+      - Database operations
+      - External services
+    e2e:
+      - Complete workflows
+      - UI integration
+      - Performance tests
+  practices:
+    - Use test containers
+    - Mock external services
+    - Use test fixtures
+    - Clean test data

@@ -1,0 +1,15 @@
+/Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/customerupdatespec_20250916T193326/src/main/java/com/customercorp/customer/dto/CustomerResponse.java
+/Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/customerupdatespec_20250916T193326/src/main/java/com/customercorp/customer/exception/CustomerNotFoundException.java
+/Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/customerupdatespec_20250916T193326/src/main/java/com/customercorp/customer/service/impl/CustomerServiceImpl.java
+/Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/customerupdatespec_20250916T193326/src/main/java/com/customercorp/customer/exception/GlobalExceptionHandler.java
+/Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/customerupdatespec_20250916T193326/src/main/java/com/customercorp/customer/exception/BadRequestException.java
+/Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/customerupdatespec_20250916T193326/src/main/java/com/customercorp/customer/CustomerManagementAPIApplication.java
+/Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/customerupdatespec_20250916T193326/src/main/java/com/customercorp/customer/controller/CustomerController.java
+/Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/customerupdatespec_20250916T193326/src/main/java/com/customercorp/customer/model/Customer.java
+/Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/customerupdatespec_20250916T193326/src/main/java/com/customercorp/customer/service/CustomerService.java
+/Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/customerupdatespec_20250916T193326/src/main/java/com/customercorp/customer/config/CustomerConfig.java
+/Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/customerupdatespec_20250916T193326/src/main/java/com/customercorp/customer/dto/CustomerRequest.java
+/Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/customerupdatespec_20250916T193326/src/main/java/com/customercorp/customer/repository/CustomerRepository.java
+/Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/customerupdatespec_20250916T193326/src/main/java/com/customercorp/customer/mapper/CustomerMapper.java
+/Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/customerupdatespec_20250916T193326/src/main/java/com/customercorp/customer/client/CustomerClient.java
+/Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/customerupdatespec_20250916T193326/src/main/java/com/customercorp/customer/exception/ResourceNotFoundException.java

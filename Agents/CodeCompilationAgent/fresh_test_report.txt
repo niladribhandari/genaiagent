@@ -1,0 +1,20 @@
+============================================================
+CODE COMPILATION REPORT
+============================================================
+
+Project Path: /Users/niladrib/WorkingFolder/genaiagent/CodeCompilation/sample-maven-project
+Project Type: java_springboot
+Compilation Status: FAILED
+Compilation Time: 0.00 seconds
+
+SUMMARY:
+  Total Issues: 1
+  Errors: 1
+  Warnings: 0
+  Build Successful: False
+
+ERRORS:
+----------------------------------------
+1. Maven (mvn) is not available in PATH
+
+============================================================

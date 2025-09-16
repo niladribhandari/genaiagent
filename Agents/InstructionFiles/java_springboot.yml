@@ -1,0 +1,558 @@
+metadata:
+  company:
+    name: ${COMPANY_NAME}
+    domain: ${COMPANY_DOMAIN}
+    package: ${BASE_PACKAGE}
+  language: Java
+  framework: Spring Boot
+  version: 3.1.0
+  description: Spring Boot based API template with Hexagonal Architecture
+  features:
+    - Hexagonal Architecture (Ports & Adapters)
+    - CQRS Pattern Support
+    - OpenAPI Documentation
+    - JWT Authentication
+    - Docker Support
+    - Flyway Migrations
+
+# CRITICAL FORMATTING REQUIREMENTS - READ FIRST
+# ==============================================
+# NEVER generate code with \n\n escape sequences
+# ALWAYS use proper line breaks and formatting
+# Generate code as if writing in an IDE with proper structure
+# Each statement must be on its own line with proper indentation
+# ==============================================
+
+# Top-level keys required by ConfigurationManager
+language: Java
+framework: Spring Boot
+version: 3.1.0
+description: Spring Boot based API template with Hexagonal Architecture
+
+project_info:
+  group_id: com.${COMPANY_NAME}
+  artifact_id: ${API_NAME}-service
+  name: ${API_NAME} Service
+  description: ${API_DESCRIPTION}
+  java_version: 17
+
+project_structure:
+  src:
+    main:
+      java:
+        ${BASE_PACKAGE}:
+          - controller/
+          - dto/
+          - model/
+          - repository/
+          - service/
+      resources:
+        - application.yml
+        - application-dev.yml
+        - application-prod.yml
+    test:
+      java:
+        ${BASE_PACKAGE}:
+          - controller/
+          - service/
+      resources:
+        - application-test.yml
+
+# General guidelines that apply to all generated code
+general_guidelines:
+  - "Follow Java coding conventions and best practices"
+  - "Implement comprehensive error handling and logging using SLF4J"
+  - "Add clear and thorough Javadoc documentation for all public methods"
+  - "Include proper input validation using Bean Validation annotations"
+  - "Follow SOLID principles and clean code practices"
+  - "Use consistent naming conventions throughout the codebase"
+  - "Implement proper exception handling with custom business exceptions"
+  - "Add appropriate unit tests with minimum 80% coverage"
+  - "Use dependency injection properly with Spring annotations"
+  - "Follow RESTful API design principles and HTTP status codes"
+  - "Implement proper transaction management with @Transactional"
+  - "Use builder pattern for complex object construction"
+  - "Avoid using illegal characters in the code, as they will cause Java compilation errors."
+  - "Ensure each generated file compiles successfully and adheres to Java standards. "
+  - "CRITICAL: Generate properly formatted Java code with real line breaks, NOT escaped \\n characters"
+  - "CRITICAL: Never use \\n\\n or \\n in the source code - use actual newline characters for proper formatting"
+  - "CRITICAL: Each Java statement must be on its own line with proper indentation"
+  - "CRITICAL: Format code with proper spacing, line breaks, and indentation as if written in an IDE"
+  - "CRITICAL: The generated source code must be immediately compilable without any formatting issues"
+
+# Code formatting requirements - MANDATORY
+code_formatting_requirements:
+  line_breaks:
+    - "Use actual newline characters, never escaped \\n sequences"
+    - "Each import statement must be on its own line"
+    - "Each method must be properly spaced with blank lines"
+    - "Opening and closing braces must be on appropriate lines"
+    - "Never generate single-line code with \\n escape sequences"
+  indentation:
+    - "Use 4 spaces for indentation (never tabs)"
+    - "Properly indent class members, method bodies, and nested blocks"
+    - "Align method parameters and annotations correctly"
+  structure:
+    - "Package declaration must be the first non-comment line"
+    - "Imports must follow package declaration with proper spacing"
+    - "Class declaration must be properly formatted with annotations"
+    - "Methods must have proper spacing between them"
+    - "Never compress multiple statements onto a single line"
+
+# Spring Boot specific guidelines
+spring_boot_guidelines:
+  dependency_injection:
+    - "Use constructor injection over field injection"
+    - "Prefer @RequiredArgsConstructor from Lombok for dependency injection"
+    - "Use @Autowired sparingly, prefer constructor injection"
+    - "Configure beans properly using @Configuration classes"
+    
+  security:
+    - "Use Spring Security for authentication and authorization"
+    - "Implement JWT-based authentication for stateless APIs"
+    - "Use @PreAuthorize and @PostAuthorize for method-level security"
+    - "Configure CORS properly for cross-origin requests"
+    
+  data_access:
+    - "Use Spring Data JPA for database operations"
+    - "Implement custom repository methods when needed"
+    - "Use @Transactional for database operations"
+    - "Implement proper entity relationships and lazy loading"
+
+templates:
+  project:
+    - "spring_boot/pom.xml"
+    - "spring_boot/docker-compose.yml" 
+    - "spring_boot/Dockerfile"
+    - "spring_boot/README.md"
+
+  core:
+    - "spring_boot/Application.java"
+    - "spring_boot/${BASE_PACKAGE}/config/OpenApiConfig.java"
+    - "spring_boot/${BASE_PACKAGE}/config/SecurityConfig.java"
+    - "spring_boot/${BASE_PACKAGE}/config/WebSecurityConfig.java"
+
+  api:
+    - "spring_boot/${BASE_PACKAGE}/controller/CustomerController.java"
+    - "spring_boot/${BASE_PACKAGE}/dto/CustomerDto.java"
+    - "spring_boot/${BASE_PACKAGE}/model/Customer.java"
+    - "spring_boot/${BASE_PACKAGE}/repository/CustomerRepository.java"
+    - "spring_boot/${BASE_PACKAGE}/service/CustomerService.java"
+    - "spring_boot/${BASE_PACKAGE}/service/impl/CustomerServiceImpl.java"
+
+  config:
+    - "spring_boot/application.yml"
+    - "spring_boot/application-dev.yml"
+    - "spring_boot/application-prod.yml"
+
+requirements:
+    - Java 17 or higher
+    - Maven 3.8+
+    - Spring Boot 3.1.0
+    - Spring dependencies:
+      - spring-boot-starter-web
+      - spring-boot-starter-data-jpa
+      - spring-boot-starter-security
+      - spring-boot-starter-validation
+      - springdoc-openapi-starter-webmvc-ui
+    - Development tools:
+      - Lombok
+      - MapStruct
+    - Build tools:
+      - Docker and Docker Compose
+      - Maven
+      - Git
+
+code_standards:
+  general:
+    - "Follow Java naming conventions (PascalCase for classes, camelCase for methods)"
+    - "Use meaningful and descriptive names for classes, methods, and variables"
+    - "Keep methods short and focused on single responsibility"
+    - "Use appropriate access modifiers (private, protected, public)"
+    - "Implement proper equals(), hashCode(), and toString() methods"
+    - "Use Optional for nullable return types"
+    - "Prefer composition over inheritance"
+    - "Write self-documenting code with clear variable and method names"
+
+  architecture:
+    - "Follow Hexagonal Architecture (Ports and Adapters) pattern"
+    - "Implement CQRS pattern for complex operations when appropriate"
+    - "Follow Domain-Driven Design (DDD) principles"
+    - "Keep domain logic free from framework dependencies"
+    - "Use layered architecture: Controller -> Service -> Repository"
+    - "Implement proper separation of concerns"
+    - "Use dependency injection for loose coupling"
+    - "Follow single responsibility principle for all classes"
+    
+  naming:
+    classes:
+      - "PascalCase for class names (e.g., PolicyController, UserService)"
+      - "Suffix implementations with purpose (e.g., JpaPolicyRepository)"
+      - "Use descriptive names that reflect the class responsibility"
+      - "Prefix interfaces with 'I' only when necessary for clarity"
+    methods:
+      - "camelCase for method names (e.g., findPolicyById, createNewPolicy)"
+      - "Prefix with get/set for accessors and mutators"
+      - "Use action verbs for methods that perform operations"
+      - "Use is/has/can for boolean methods"
+    packages:
+      - "All lowercase with dots as separators"
+      - "Use domain terminology that reflects business concepts"
+      - "Separate by architectural layers (controller, service, repository, model)"
+      
+  annotations:
+    spring:
+      - "Use @SpringBootApplication for main application class"
+      - "Use @RestController for REST API controllers"
+      - "Use @Service for business logic services"
+      - "Use @Repository for data access components"
+      - "Use @Configuration for configuration classes"
+      - "Use @Profile for environment-specific configurations"
+      - "Use @Transactional for transaction management"
+    validation:
+      - "Use @Valid for DTO validation in controller methods"
+      - "Use @Validated for class-level validation"
+      - "Use @NotNull, @NotBlank, @Size for field validation"
+      - "Create custom constraint annotations when needed"
+    documentation:
+      - "Use @Tag for OpenAPI controller documentation"
+      - "Use @Operation for endpoint documentation"
+      - "Use @Schema for model documentation"
+      - "Use @Parameter for parameter documentation"
+    testing:
+      - "Use @SpringBootTest for integration tests"
+      - "Use @DataJpaTest for repository layer tests"
+      - "Use @WebMvcTest for controller layer tests"
+      - "Use @MockBean for mocking Spring beans"
+      
+  patterns:
+    - "Use Builder pattern for complex object construction"
+    - "Use Factory pattern for object creation with business logic"
+    - "Use Strategy pattern for varying algorithms"
+    - "Use Observer pattern for event-driven architecture"
+    - "Use Repository pattern for data access abstraction"
+    - "Use DTO pattern for data transfer between layers"
+    
+  error_handling:
+    - "Create custom exceptions for specific business errors"
+    - "Implement global exception handler with @ControllerAdvice"
+    - "Return appropriate HTTP status codes (200, 201, 400, 404, 500)"
+    - "Include meaningful error messages and error codes in responses"
+    - "Log errors with appropriate context and correlation IDs"
+    - "Use @ExceptionHandler for specific exception handling"
+    - "Validate input parameters and return 400 for invalid requests"
+    
+  security:
+    - "Validate all input parameters to prevent injection attacks"
+    - "Use parameterized queries to prevent SQL injection"
+    - "Implement proper authentication and authorization"
+    - "Follow OWASP security guidelines"
+    - "Use HTTPS for all communication"
+    - "Implement rate limiting for public endpoints"
+    - "Sanitize user input and encode output"
+    
+  performance:
+    - "Use pagination for large datasets (@PageableDefault)"
+    - "Implement proper caching strategies with @Cacheable"
+    - "Use lazy loading for entity relationships"
+    - "Optimize database queries and avoid N+1 problems"
+    - "Use connection pooling for database connections"
+    - "Implement proper indexing for database queries"
+    
+  testing:
+    unit:
+      - "Test domain logic in isolation from framework"
+      - "Use mocks for external dependencies with @MockBean"
+      - "Follow AAA pattern (Arrange-Act-Assert)"
+      - "Write focused tests with single assertions"
+      - "Use meaningful test method names that describe the scenario"
+    integration:
+      - "Test complete use cases end-to-end"
+      - "Use @TestContainers for database integration tests"
+      - "Clean up test data after each test"
+      - "Use test profiles and separate test configurations"
+      - "Test error scenarios and edge cases"
+
+code_standards:
+  architecture:
+    - Follow Hexagonal Architecture (Ports and Adapters)
+    - Implement CQRS pattern for complex operations
+    - Follow Domain-Driven Design (DDD) principles
+    - Keep domain logic free from framework dependencies
+    
+  naming:
+    classes:
+      - PascalCase for class names
+      - Suffix implementations with purpose (e.g., JpaUserRepository)
+      - Prefix interfaces based on role (e.g., IUserRepository or UserRepository)
+    methods:
+      - camelCase for method names
+      - Prefix with get/set for accessors
+      - Use meaningful, descriptive names
+    packages:
+      - All lowercase
+      - Use domain terminology
+      - Separate by concerns (domain, application, infrastructure)
+      
+  annotations:
+    spring:
+      - '@SpringBootApplication for main class'
+      - '@RestController for web controllers'
+      - '@Service for application services'
+      - '@Repository for persistence adapters'
+      - '@Configuration for config classes'
+      - '@Profile for environment-specific configs'
+    validation:
+      - '@Valid for DTO validation'
+      - '@Validated for class-level validation'
+      - 'Custom constraint annotations when needed'
+    documentation:
+      - '@Tag for OpenAPI/Swagger'
+      - '@Operation for endpoint documentation'
+      - '@Schema for model documentation'
+    testing:
+      - '@SpringBootTest for integration tests'
+      - '@DataJpaTest for repository tests'
+      - '@WebMvcTest for controller tests'
+      
+  patterns:
+    - Use Builder pattern for complex objects
+    - Use Factory pattern for object creation
+    - Use Strategy pattern for varying algorithms
+    - Use Observer pattern for events
+    
+  error_handling:
+    - Use custom exceptions for domain errors
+    - Implement global exception handler
+    - Return appropriate HTTP status codes
+    - Include error details in responses
+    
+  testing:
+    unit:
+      - Test domain logic in isolation
+      - Use mocks for external dependencies
+      - Follow AAA pattern (Arrange-Act-Assert)
+    integration:
+      - Test complete use cases
+      - Use test containers for dependencies
+      - Clean up test data
+
+dependencies:
+  build:
+    - org.springframework.boot:spring-boot-starter-parent
+    - org.projectlombok:lombok
+    - org.mapstruct:mapstruct
+  web:
+    - org.springframework.boot:spring-boot-starter-web
+    - org.springframework.boot:spring-boot-starter-validation
+    - org.springdoc:springdoc-openapi-starter-webmvc-ui
+  persistence:
+    - org.springframework.boot:spring-boot-starter-data-jpa
+    - org.flywaydb:flyway-core
+    - com.h2database:h2
+    - org.postgresql:postgresql
+  security:
+    - org.springframework.boot:spring-boot-starter-security
+    - io.jsonwebtoken:jjwt-api
+  testing:
+    - org.springframework.boot:spring-boot-starter-test
+    - org.testcontainers:junit-jupiter
+    - org.testcontainers:postgresql
+    - org.mockito:mockito-core
+
+# File generation configuration
+files_to_generate:
+  - source: "spring_boot/pom.xml"
+    destination: "pom.xml"
+  - source: "spring_boot/docker-compose.yml"
+    destination: "docker-compose.yml"
+  - source: "spring_boot/Dockerfile"
+    destination: "Dockerfile"
+  - source: "spring_boot/README.md"
+    destination: "README.md"
+  - source: "spring_boot/Application.java"
+    destination: "src/main/java/${BASE_PACKAGE}/Application.java"
+  - source: "spring_boot/${BASE_PACKAGE}/config/OpenApiConfig.java"
+    destination: "src/main/java/${BASE_PACKAGE}/config/OpenApiConfig.java"
+  - source: "spring_boot/${BASE_PACKAGE}/config/SecurityConfig.java"
+    destination: "src/main/java/${BASE_PACKAGE}/config/SecurityConfig.java"
+  - source: "spring_boot/${BASE_PACKAGE}/controller/CustomerController.java"
+    destination: "src/main/java/${BASE_PACKAGE}/controller/CustomerController.java"
+  - source: "spring_boot/${BASE_PACKAGE}/dto/CustomerDto.java"
+    destination: "src/main/java/${BASE_PACKAGE}/dto/CustomerDto.java"
+  - source: "spring_boot/${BASE_PACKAGE}/model/Customer.java"
+    destination: "src/main/java/${BASE_PACKAGE}/model/Customer.java"
+  - source: "spring_boot/${BASE_PACKAGE}/repository/CustomerRepository.java"
+    destination: "src/main/java/${BASE_PACKAGE}/repository/CustomerRepository.java"
+  - source: "spring_boot/${BASE_PACKAGE}/service/CustomerService.java"
+    destination: "src/main/java/${BASE_PACKAGE}/service/CustomerService.java"
+  - source: "spring_boot/${BASE_PACKAGE}/service/impl/CustomerServiceImpl.java"
+    destination: "src/main/java/${BASE_PACKAGE}/service/impl/CustomerServiceImpl.java"
+  - source: "spring_boot/application.yml"
+    destination: "src/main/resources/application.yml"
+  - source: "spring_boot/application-dev.yml"
+    destination: "src/main/resources/application-dev.yml"
+  - source: "spring_boot/application-prod.yml"
+    destination: "src/main/resources/application-prod.yml"
+  # CONTROLLER - Correct mapping
+  - source: "spring_boot/${BASE_PACKAGE}/controller/${ENTITY_NAME}Controller.java"
+    destination: "src/main/java/${BASE_PACKAGE}/controller/${ENTITY_NAME}Controller.java"
+    
+  # MODEL - Correct mapping  
+  - source: "spring_boot/${BASE_PACKAGE}/model/${ENTITY_NAME}.java"
+    destination: "src/main/java/${BASE_PACKAGE}/model/${ENTITY_NAME}.java"
+    
+  # DTO - Correct mapping
+  - source: "spring_boot/${BASE_PACKAGE}/dto/${ENTITY_NAME}Dto.java"
+    destination: "src/main/java/${BASE_PACKAGE}/dto/${ENTITY_NAME}Dto.java"
+    
+  # REPOSITORY - Correct mapping
+  - source: "spring_boot/${BASE_PACKAGE}/repository/${ENTITY_NAME}Repository.java"
+    destination: "src/main/java/${BASE_PACKAGE}/repository/${ENTITY_NAME}Repository.java"
+    
+  # SERVICE - Correct mapping
+  - source: "spring_boot/${BASE_PACKAGE}/service/${ENTITY_NAME}Service.java"
+    destination: "src/main/java/${BASE_PACKAGE}/service/${ENTITY_NAME}Service.java"
+    
+  # SERVICE IMPL - Correct mapping
+  - source: "spring_boot/${BASE_PACKAGE}/service/impl/${ENTITY_NAME}ServiceImpl.java"
+    destination: "src/main/java/${BASE_PACKAGE}/service/impl/${ENTITY_NAME}ServiceImpl.java"
+
+api_conventions:
+  rest:
+    - Use proper HTTP methods (GET, POST, PUT, DELETE)
+    - Follow REST naming conventions
+    - Implement HATEOAS where appropriate
+    - Use proper status codes
+  versioning:
+    - Include version in URL (/api/v1/...)
+    - Support multiple versions if needed
+  security:
+    - Use JWT for authentication
+    - Implement role-based authorization
+    - Rate limiting for public endpoints
+  documentation:
+    - OpenAPI 3.0 annotations
+    - Detailed operation descriptions
+    - Example requests/responses
+    - Error scenarios
+    
+persistence:
+  patterns:
+    - Use JPA entities for persistence
+    - Implement repository interfaces
+    - Use specifications for complex queries
+  practices:
+    - Implement optimistic locking
+    - Use database migrations
+    - Handle soft deletes
+    - Implement auditing
+
+external_service_integration:
+  configuration_patterns:
+    - "Use @Value annotations for configurable properties"
+    - "Define base URLs in application.yml with environment-specific overrides"
+    - "Configure timeouts, retry policies, and circuit breakers via properties"
+    - "Use @ConfigurationProperties for complex service configurations"
+    - "Never hardcode URLs, credentials, or environment-specific values"
+  
+  property_naming:
+    - "integration.{service-name}.base-url for service base URLs"
+    - "integration.{service-name}.timeout for request timeouts"
+    - "integration.{service-name}.retry.max-attempts for retry configuration"
+    - "integration.{service-name}.auth.api-key for authentication"
+    - "integration.{service-name}.circuit-breaker.enabled for resilience patterns"
+  
+  client_patterns:
+    - "Inject RestTemplate or WebClient via constructor"
+    - "Use @Component annotation for client beans"  
+    - "Implement proper error handling and logging"
+    - "Add circuit breaker patterns for external calls"
+    - "Include request/response logging for debugging"
+    - "Use typed response objects instead of generic maps"
+    
+  configuration_example: |
+    @Component
+    public class ExternalServiceClient {
+        @Value("${integration.service-name.base-url}")
+        private String baseUrl;
+        
+        @Value("${integration.service-name.timeout:30000}")
+        private int timeoutMs;
+        
+        private final RestTemplate restTemplate;
+        
+        @Autowired
+        public ExternalServiceClient(RestTemplate restTemplate) {
+            this.restTemplate = restTemplate;
+        }
+    }
+
+application_yml_integration_config: |
+  # External service integration configuration
+  integration:
+    compliance-engine:
+      base-url: ${COMPLIANCE_ENGINE_URL:http://localhost:8081}
+      timeout: ${COMPLIANCE_ENGINE_TIMEOUT:30000}
+      retry:
+        max-attempts: 3
+        delay: 1000
+      circuit-breaker:
+        enabled: true
+        failure-rate-threshold: 50
+        wait-duration: 60000
+      auth:
+        api-key: ${COMPLIANCE_ENGINE_API_KEY:}
+        
+    market-data-provider:
+      base-url: ${MARKET_DATA_URL:http://localhost:8082}
+      timeout: ${MARKET_DATA_TIMEOUT:15000}
+      retry:
+        max-attempts: 2
+        delay: 500
+        
+    risk-calculation-engine:
+      base-url: ${RISK_ENGINE_URL:http://localhost:8083}
+      timeout: ${RISK_ENGINE_TIMEOUT:45000}
+      retry:
+        max-attempts: 5
+        delay: 2000
+
+resilience_patterns:
+monitoring:
+  health:
+    - Implement health check endpoints
+    - Monitor application metrics
+    - Set up actuator endpoints
+  logging:
+    - Use SLF4J with Logback
+    - Implement structured logging
+    - Configure different log levels
+    - Include correlation IDs
+  metrics:
+    - Use Micrometer for metrics
+    - Track business metrics
+    - Monitor performance
+    
+testing:
+  coverage:
+    - Minimum 80% code coverage
+    - 100% coverage for domain logic
+  practices:
+    - Write clean, focused tests
+    - Use test data builders
+    - Implement test utilities
+    - Mock external services
+  types:
+    unit:
+      - Domain logic tests
+      - Service layer tests
+      - Mapper tests
+    integration:
+      - Repository tests
+      - Controller tests
+      - End-to-end flows
+    performance:
+      - Load tests
+      - Stress tests
+      - Endurance tests

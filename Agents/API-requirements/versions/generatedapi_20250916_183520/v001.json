@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "timestamp": "2025-09-16T18:35:20.553685",
+  "api_version": "1.0.0",
+  "api_title": "API Specification",
+  "format": "openapi_yaml",
+  "file_path": "../API-requirements/specs/generatedapi_20250916_183520.yml",
+  "metadata": {}
+}

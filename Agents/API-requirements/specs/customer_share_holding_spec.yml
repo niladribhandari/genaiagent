@@ -1,0 +1,1316 @@
+metadata:
+  company:
+    name: "FinanceCorp"
+    domain: "financecorp.com"
+    package: "com.financecorp.investment.holdings"
+  project:
+    name: "CustomerShareHoldingIntegrationAPI"
+    description: "Integration API service that aggregates customer share holding data from downstream systems with real-time analytics"
+    version: "3.0.0"
+  base_package: "com.financecorp.investment.holdings"
+  company_name: "FinanceCorp"
+  company_domain: "financecorp.com"
+  version: "3.0.0"
+  description: "API Gateway for share holding data integration with downstream custodian and market data systems"
+  team: "Investment Integration Team"
+  owner: "integration-team@financecorp.com"
+
+# Language and Framework Configuration
+language: "java"
+framework: "spring boot"
+
+# Package Structure Configuration
+package_structure:
+  controller: "com.financecorp.investment.holdings.controller"
+  service: "com.financecorp.investment.holdings.service"
+  client: "com.financecorp.investment.holdings.client"
+  model: "com.financecorp.investment.holdings.model"
+  dto: "com.financecorp.investment.holdings.dto"
+  config: "com.financecorp.investment.holdings.config"
+  exception: "com.financecorp.investment.holdings.exception"
+  util: "com.financecorp.investment.holdings.util"
+  validation: "com.financecorp.investment.holdings.validation"
+  analytics: "com.financecorp.investment.holdings.analytics"
+  risk: "com.financecorp.investment.holdings.risk"
+  compliance: "com.financecorp.investment.holdings.compliance"
+  integration: "com.financecorp.investment.holdings.integration"
+  cache: "com.financecorp.investment.holdings.cache"
+  circuit: "com.financecorp.investment.holdings.circuit"
+  aggregator: "com.financecorp.investment.holdings.aggregator"
+
+
+# API Configuration
+api:
+  name: "CustomerShareHoldingIntegrationAPI"
+  version: "v3"
+  base_path: "/api/v3"
+  description: "Integration API that aggregates customer share holdings from multiple downstream systems"
+  
+# Downstream System Configuration
+downstream_systems:
+  custodian_api:
+    name: "CustodianBankAPI"
+    base_url: "${CUSTODIAN_API_BASE_URL}"
+    timeout: "10000ms"
+    retry_policy: "exponential_backoff"
+    circuit_breaker: "enabled"
+  
+  market_data_api:
+    name: "MarketDataProvider"
+    base_url: "${MARKET_DATA_API_BASE_URL}"
+    timeout: "5000ms"
+    retry_policy: "linear_backoff"
+    circuit_breaker: "enabled"
+    
+  risk_engine_api:
+    name: "RiskCalculationEngine"
+    base_url: "${RISK_ENGINE_API_BASE_URL}"
+    timeout: "15000ms"
+    retry_policy: "exponential_backoff"
+    circuit_breaker: "enabled"
+    
+  portfolio_analytics_api:
+    name: "PortfolioAnalyticsService"
+    base_url: "${ANALYTICS_API_BASE_URL}"
+    timeout: "8000ms"
+    retry_policy: "exponential_backoff"
+    circuit_breaker: "enabled"
+    
+  compliance_api:
+    name: "ComplianceMonitoringService"
+    base_url: "${COMPLIANCE_API_BASE_URL}"
+    timeout: "12000ms"
+    retry_policy: "linear_backoff"
+    circuit_breaker: "enabled"
+  
+# Main Entity
+entity:
+  name: "ShareHolding"
+  description: "Customer share holding aggregated from multiple downstream systems"
+  
+# API Endpoints
+endpoints:
+  - name: "Get Share Holdings by Customer ID"
+    method: "GET"
+    path: "/customers/{customerId}/holdings"
+    description: "Retrieve comprehensive share holdings for a customer with portfolio analytics"
+    parameters:
+      - name: "customerId"
+        type: "UUID"
+        location: "path"
+        required: true
+        description: "Customer unique identifier"
+        validation:
+          - not_null: true
+          - format: "UUID"
+      - name: "includeAnalytics"
+        type: "boolean"
+        location: "query"
+        required: false
+        default: true
+        description: "Include portfolio analytics and performance metrics"
+      - name: "includeRiskMetrics"
+        type: "boolean"
+        location: "query"
+        required: false
+        default: true
+        description: "Include risk assessment and volatility metrics"
+      - name: "asOfDate"
+        type: "LocalDate"
+        location: "query"
+        required: false
+        description: "Get holdings as of specific date (defaults to current date)"
+      - name: "currency"
+        type: "string"
+        location: "query"
+        required: false
+        default: "USD"
+        description: "Currency for value calculations"
+        validation:
+          - pattern: "^[A-Z]{3}$"
+      - name: "consolidateBySymbol"
+        type: "boolean"
+        location: "query"
+        required: false
+        default: false
+        description: "Consolidate holdings by stock symbol across accounts"
+    responses:
+      200:
+        description: "Share holdings retrieved successfully with analytics"
+        content: "CustomerHoldingsResponse"
+      404:
+        description: "Customer not found or no holdings available"
+      403:
+        description: "Insufficient permissions to access holdings"
+      422:
+        description: "Invalid date range or currency specified"
+
+  - name: "Get Specific Share Holding"
+    method: "GET"
+    path: "/holdings/{holdingId}"
+    description: "Get detailed information about a specific share holding"
+    parameters:
+      - name: "holdingId"
+        type: "UUID"
+        location: "path"
+        required: true
+        description: "Share holding unique identifier"
+      - name: "includeHistory"
+        type: "boolean"
+        location: "query"
+        required: false
+        default: false
+        description: "Include transaction history for this holding"
+      - name: "includeDividends"
+        type: "boolean"
+        location: "query"
+        required: false
+        default: true
+        description: "Include dividend information"
+    responses:
+      200:
+        description: "Share holding details retrieved successfully"
+        content: "ShareHoldingDetailResponse"
+      404:
+        description: "Share holding not found"
+
+  - name: "Get Portfolio Summary"
+    method: "GET"
+    path: "/customers/{customerId}/portfolio/summary"
+    description: "Get comprehensive portfolio summary with analytics"
+    parameters:
+      - name: "customerId"
+        type: "UUID"
+        location: "path"
+        required: true
+        description: "Customer unique identifier"
+      - name: "timeframe"
+        type: "string"
+        location: "query"
+        required: false
+        default: "1Y"
+        description: "Analysis timeframe (1D, 1W, 1M, 3M, 6M, 1Y, 3Y, 5Y)"
+        enum: ["1D", "1W", "1M", "3M", "6M", "1Y", "3Y", "5Y"]
+    responses:
+      200:
+        description: "Portfolio summary with analytics"
+        content: "PortfolioSummaryResponse"
+
+  - name: "Get Holdings Performance"
+    method: "GET"
+    path: "/customers/{customerId}/holdings/performance"
+    description: "Get performance analytics for customer holdings"
+    parameters:
+      - name: "customerId"
+        type: "UUID"
+        location: "path"
+        required: true
+        description: "Customer unique identifier"
+      - name: "startDate"
+        type: "LocalDate"
+        location: "query"
+        required: true
+        description: "Performance analysis start date"
+      - name: "endDate"
+        type: "LocalDate"
+        location: "query"
+        required: true
+        description: "Performance analysis end date"
+      - name: "benchmarkSymbol"
+        type: "string"
+        location: "query"
+        required: false
+        default: "SPY"
+        description: "Benchmark symbol for comparison"
+    responses:
+      200:
+        description: "Performance analytics retrieved successfully"
+        content: "HoldingsPerformanceResponse"
+
+  - name: "Get Risk Assessment"
+    method: "GET"
+    path: "/customers/{customerId}/holdings/risk"
+    description: "Get comprehensive risk assessment for customer portfolio"
+    parameters:
+      - name: "customerId"
+        type: "UUID"
+        location: "path"
+        required: true
+        description: "Customer unique identifier"
+      - name: "riskModel"
+        type: "string"
+        location: "query"
+        required: false
+        default: "VAR_95"
+        description: "Risk calculation model"
+        enum: ["VAR_95", "VAR_99", "EXPECTED_SHORTFALL", "BETA_WEIGHTED", "VOLATILITY"]
+    responses:
+      200:
+        description: "Risk assessment completed successfully"
+        content: "PortfolioRiskResponse"
+
+  - name: "Validate Holdings"
+    method: "POST"
+    path: "/customers/{customerId}/holdings/validate"
+    description: "Validate customer holdings against external systems"
+    parameters:
+      - name: "customerId"
+        type: "UUID"
+        location: "path"
+        required: true
+        description: "Customer unique identifier"
+    request_body:
+      type: "HoldingsValidationRequest"
+      required: true
+      description: "Validation parameters and external system references"
+    responses:
+      200:
+        description: "Holdings validation completed"
+        content: "HoldingsValidationResponse"
+      422:
+        description: "Validation discrepancies found"
+
+# Data Models
+models:
+  CustomerHoldingsResponse:
+    description: "Aggregated customer holdings response from multiple downstream systems"
+    properties:
+      customerId:
+        type: "UUID"
+        description: "Customer unique identifier"
+      customerName:
+        type: "string"
+        description: "Customer name from custodian system"
+      accountNumber:
+        type: "string"
+        description: "Primary account number"
+      totalPortfolioValue:
+        type: "BigDecimal"
+        description: "Total portfolio value aggregated from all sources"
+      currency:
+        type: "string"
+        description: "Currency for all monetary values"
+      asOfDate:
+        type: "LocalDateTime"
+        description: "Data timestamp from source systems"
+      holdings:
+        type: "List<ShareHoldingResponse>"
+        description: "List of individual share holdings"
+      portfolioAnalytics:
+        type: "PortfolioAnalytics"
+        description: "Analytics calculated from downstream services"
+      riskMetrics:
+        type: "PortfolioRiskMetrics"
+        description: "Risk assessment from risk engine API"
+      complianceStatus:
+        type: "ComplianceStatus"
+        description: "Compliance status from monitoring API"
+      dataFreshness:
+        type: "Map<String, LocalDateTime>"
+        description: "Last update timestamp per data source"
+      serviceStatus:
+        type: "string"
+        description: "Overall service status (FULL, DEGRADED, LIMITED)"
+        enum: ["FULL", "DEGRADED", "LIMITED"]
+      warnings:
+        type: "List<string>"
+        description: "Any warnings about data quality or availability"
+      dataSources:
+        type: "Map<String, String>"
+        description: "Source system for each data element"
+
+  DownstreamApiRequest:
+    description: "Generic request wrapper for downstream API calls"
+    properties:
+      customerId:
+        type: "UUID"
+        description: "Customer identifier for the request"
+        required: true
+      requestId:
+        type: "UUID"
+        description: "Unique request identifier for tracing"
+        required: true
+      timestamp:
+        type: "LocalDateTime"
+        description: "Request timestamp"
+        required: true
+      parameters:
+        type: "Map<String, Object>"
+        description: "API-specific parameters"
+        required: false
+      headers:
+        type: "Map<String, String>"
+        description: "Custom headers for downstream calls"
+        required: false
+      timeout:
+        type: "Duration"
+        description: "Request timeout override"
+        required: false
+
+  DownstreamApiResponse:
+    description: "Generic response wrapper from downstream APIs"
+    properties:
+      responseId:
+        type: "UUID"
+        description: "Unique response identifier"
+      requestId:
+        type: "UUID"
+        description: "Original request identifier"
+      timestamp:
+        type: "LocalDateTime"
+        description: "Response timestamp"
+      source:
+        type: "string"
+        description: "Source system name"
+      status:
+        type: "string"
+        description: "Response status"
+        enum: ["SUCCESS", "PARTIAL", "FAILED", "TIMEOUT"]
+      data:
+        type: "Object"
+        description: "Response data payload"
+      responseTime:
+        type: "long"
+        description: "Response time in milliseconds"
+      cacheHit:
+        type: "boolean"
+        description: "Whether response came from cache"
+      errors:
+        type: "List<ApiError>"
+        description: "Any errors encountered"
+
+  CircuitBreakerStatus:
+    description: "Circuit breaker status for downstream services"
+    properties:
+      serviceName:
+        type: "string"
+        description: "Name of the downstream service"
+      state:
+        type: "string"
+        description: "Circuit breaker state"
+        enum: ["CLOSED", "OPEN", "HALF_OPEN"]
+      failureCount:
+        type: "int"
+        description: "Current failure count"
+      lastFailureTime:
+        type: "LocalDateTime"
+        description: "Timestamp of last failure"
+      nextRetryTime:
+        type: "LocalDateTime"
+        description: "When the circuit will attempt to close"
+      successfulCalls:
+        type: "long"
+        description: "Total successful calls"
+      failedCalls:
+        type: "long"
+        description: "Total failed calls"
+
+  ApiMetrics:
+    description: "Performance metrics for downstream API calls"
+    properties:
+      serviceName:
+        type: "string"
+        description: "Name of the downstream service"
+      averageResponseTime:
+        type: "double"
+        description: "Average response time in milliseconds"
+      p95ResponseTime:
+        type: "double"
+        description: "95th percentile response time"
+      p99ResponseTime:
+        type: "double"
+        description: "99th percentile response time"
+      successRate:
+        type: "double"
+        description: "Success rate percentage"
+      requestsPerMinute:
+        type: "double"
+        description: "Current request rate"
+      cacheHitRate:
+        type: "double"
+        description: "Cache hit rate percentage"
+      errorRate:
+        type: "double"
+        description: "Error rate percentage"
+      timeoutRate:
+        type: "double"
+        description: "Timeout rate percentage"
+
+  ShareHoldingResponse:
+    description: "Individual share holding with analytics"
+    properties:
+      holdingId:
+        type: "UUID"
+        description: "Holding unique identifier"
+      symbol:
+        type: "string"
+        description: "Stock symbol"
+      companyName:
+        type: "string"
+        description: "Company name"
+      cusip:
+        type: "string"
+        description: "CUSIP identifier"
+      isin:
+        type: "string"
+        description: "ISIN identifier"
+      sector:
+        type: "string"
+        description: "Industry sector"
+      exchange:
+        type: "string"
+        description: "Primary exchange"
+      quantity:
+        type: "BigDecimal"
+        description: "Number of shares held"
+      averageCostBasis:
+        type: "BigDecimal"
+        description: "Average cost per share"
+      totalCostBasis:
+        type: "BigDecimal"
+        description: "Total investment amount"
+      currentPrice:
+        type: "BigDecimal"
+        description: "Current market price per share"
+      marketValue:
+        type: "BigDecimal"
+        description: "Current total market value"
+      unrealizedGainLoss:
+        type: "BigDecimal"
+        description: "Unrealized gain or loss"
+      unrealizedGainLossPercent:
+        type: "BigDecimal"
+        description: "Unrealized gain/loss percentage"
+      dayChange:
+        type: "BigDecimal"
+        description: "Day-over-day price change"
+      dayChangePercent:
+        type: "BigDecimal"
+        description: "Day-over-day percentage change"
+      portfolioWeight:
+        type: "BigDecimal"
+        description: "Percentage of total portfolio value"
+      holdingPeriod:
+        type: "int"
+        description: "Days held"
+      averageVolume:
+        type: "long"
+        description: "Average daily trading volume"
+      beta:
+        type: "BigDecimal"
+        description: "Beta coefficient vs benchmark"
+      dividendYield:
+        type: "BigDecimal"
+        description: "Current dividend yield"
+      lastDividendDate:
+        type: "LocalDate"
+        description: "Last dividend payment date"
+      nextDividendDate:
+        type: "LocalDate"
+        description: "Next expected dividend date"
+      totalDividendsReceived:
+        type: "BigDecimal"
+        description: "Total dividends received to date"
+      taxLotDetails:
+        type: "List<TaxLot>"
+        description: "Tax lot breakdown"
+      riskRating:
+        type: "string"
+        description: "Risk rating (LOW, MEDIUM, HIGH, VERY_HIGH)"
+      analystRating:
+        type: "string"
+        description: "Consensus analyst rating"
+      priceTarget:
+        type: "BigDecimal"
+        description: "Average analyst price target"
+      acquisitionDate:
+        type: "LocalDate"
+        description: "First acquisition date"
+      lastTransactionDate:
+        type: "LocalDate"
+        description: "Last transaction date"
+
+  PortfolioAnalytics:
+    description: "Portfolio-level analytics and performance metrics"
+    properties:
+      totalValue:
+        type: "BigDecimal"
+        description: "Total portfolio value"
+      totalCostBasis:
+        type: "BigDecimal"
+        description: "Total cost basis"
+      totalUnrealizedGainLoss:
+        type: "BigDecimal"
+        description: "Total unrealized gains/losses"
+      totalRealizedGainLoss:
+        type: "BigDecimal"
+        description: "Total realized gains/losses (YTD)"
+      totalDividends:
+        type: "BigDecimal"
+        description: "Total dividends received (YTD)"
+      portfolioReturn:
+        type: "BigDecimal"
+        description: "Portfolio return percentage"
+      annualizedReturn:
+        type: "BigDecimal"
+        description: "Annualized return percentage"
+      sharpeRatio:
+        type: "BigDecimal"
+        description: "Risk-adjusted return metric"
+      volatility:
+        type: "BigDecimal"
+        description: "Portfolio volatility (standard deviation)"
+      maxDrawdown:
+        type: "BigDecimal"
+        description: "Maximum drawdown percentage"
+      numberOfPositions:
+        type: "int"
+        description: "Total number of holdings"
+      diversificationScore:
+        type: "BigDecimal"
+        description: "Portfolio diversification score (0-100)"
+      concentrationRisk:
+        type: "BigDecimal"
+        description: "Concentration risk score"
+      sectorAllocation:
+        type: "Map<String, BigDecimal>"
+        description: "Allocation by sector"
+      assetClassAllocation:
+        type: "Map<String, BigDecimal>"
+        description: "Allocation by asset class"
+      geographicAllocation:
+        type: "Map<String, BigDecimal>"
+        description: "Allocation by geography"
+      topHoldings:
+        type: "List<TopHolding>"
+        description: "Top 10 holdings by value"
+      performanceAttribution:
+        type: "PerformanceAttribution"
+        description: "Performance attribution analysis"
+
+  PortfolioRiskMetrics:
+    description: "Comprehensive portfolio risk assessment"
+    properties:
+      valueAtRisk95:
+        type: "BigDecimal"
+        description: "Value at Risk (95% confidence)"
+      valueAtRisk99:
+        type: "BigDecimal"
+        description: "Value at Risk (99% confidence)"
+      expectedShortfall:
+        type: "BigDecimal"
+        description: "Expected shortfall (conditional VaR)"
+      beta:
+        type: "BigDecimal"
+        description: "Portfolio beta vs benchmark"
+      correlationMatrix:
+        type: "Map<String, Map<String, BigDecimal>>"
+        description: "Correlation matrix between holdings"
+      riskBudget:
+        type: "Map<String, BigDecimal>"
+        description: "Risk contribution by holding"
+      stressTestResults:
+        type: "List<StressTestResult>"
+        description: "Stress test scenario results"
+      liquidityRisk:
+        type: "BigDecimal"
+        description: "Portfolio liquidity risk score"
+      concentrationRisk:
+        type: "BigDecimal"
+        description: "Concentration risk score"
+      creditRisk:
+        type: "BigDecimal"
+        description: "Credit risk exposure"
+      currencyRisk:
+        type: "BigDecimal"
+        description: "Currency exposure risk"
+      interestRateRisk:
+        type: "BigDecimal"
+        description: "Interest rate sensitivity"
+
+  TaxLot:
+    description: "Tax lot details for holding"
+    properties:
+      lotId:
+        type: "UUID"
+        description: "Tax lot identifier"
+      acquisitionDate:
+        type: "LocalDate"
+        description: "Acquisition date"
+      quantity:
+        type: "BigDecimal"
+        description: "Shares in this lot"
+      costBasis:
+        type: "BigDecimal"
+        description: "Cost basis per share"
+      totalCost:
+        type: "BigDecimal"
+        description: "Total cost for this lot"
+      holdingPeriod:
+        type: "int"
+        description: "Days held"
+      isLongTerm:
+        type: "boolean"
+        description: "Qualifies for long-term capital gains"
+      unrealizedGainLoss:
+        type: "BigDecimal"
+        description: "Unrealized gain/loss for this lot"
+
+  HoldingsValidationRequest:
+    description: "Request for holdings validation against external systems"
+    properties:
+      validationSystems:
+        type: "List<string>"
+        description: "External systems to validate against"
+        enum: ["DTCC", "CLEARING_HOUSE", "CUSTODIAN", "PRIME_BROKER"]
+      includeReconciliation:
+        type: "boolean"
+        description: "Include detailed reconciliation report"
+        default: true
+      validationDate:
+        type: "LocalDate"
+        description: "Date for validation (defaults to current date)"
+        required: false
+      toleranceThreshold:
+        type: "BigDecimal"
+        description: "Tolerance threshold for discrepancies"
+        default: 0.01
+
+  HoldingsValidationResponse:
+    description: "Holdings validation results"
+    properties:
+      validationId:
+        type: "UUID"
+        description: "Validation request identifier"
+      validationStatus:
+        type: "string"
+        description: "Overall validation status"
+        enum: ["PASSED", "FAILED", "WARNING", "PENDING"]
+      validationDate:
+        type: "LocalDateTime"
+        description: "Validation execution timestamp"
+      discrepancies:
+        type: "List<ValidationDiscrepancy>"
+        description: "List of validation discrepancies"
+      reconciliationReport:
+        type: "ReconciliationReport"
+        description: "Detailed reconciliation report"
+      systemResults:
+        type: "Map<String, SystemValidationResult>"
+        description: "Results by external system"
+
+  PortfolioSummaryResponse:
+    description: "High-level portfolio summary with key metrics"
+    properties:
+      customerId:
+        type: "UUID"
+        description: "Customer identifier"
+      totalValue:
+        type: "BigDecimal"
+        description: "Total portfolio value"
+      dayChange:
+        type: "BigDecimal"
+        description: "Day change in value"
+      dayChangePercent:
+        type: "BigDecimal"
+        description: "Day change percentage"
+      totalReturn:
+        type: "BigDecimal"
+        description: "Total return since inception"
+      totalReturnPercent:
+        type: "BigDecimal"
+        description: "Total return percentage"
+      cashPosition:
+        type: "BigDecimal"
+        description: "Cash and cash equivalents"
+      numberOfHoldings:
+        type: "int"
+        description: "Total number of positions"
+      topPerformers:
+        type: "List<TopPerformer>"
+        description: "Top 5 performing holdings"
+      bottomPerformers:
+        type: "List<TopPerformer>"
+        description: "Bottom 5 performing holdings"
+      assetAllocation:
+        type: "Map<String, BigDecimal>"
+        description: "Asset class allocation percentages"
+      riskScore:
+        type: "BigDecimal"
+        description: "Overall portfolio risk score"
+
+# Business Rules and Complex Logic
+business_rules:
+  - name: "Downstream API Orchestration"
+    description: "Coordinate calls to multiple downstream APIs and aggregate responses"
+    validation: "All critical APIs must respond within SLA timeouts"
+    implementation: |
+      // Call custodian API for core holdings data
+      custodianResponse = custodianClient.getCustomerHoldings(customerId);
+      
+      // Parallel calls for enrichment data
+      CompletableFuture<MarketDataResponse> marketDataFuture = 
+          CompletableFuture.supplyAsync(() -> marketDataClient.getPrices(symbols));
+      CompletableFuture<RiskMetricsResponse> riskFuture = 
+          CompletableFuture.supplyAsync(() -> riskEngineClient.calculateRisk(holdings));
+      CompletableFuture<AnalyticsResponse> analyticsFuture = 
+          CompletableFuture.supplyAsync(() -> analyticsClient.getPortfolioAnalytics(customerId));
+      
+      // Aggregate responses with timeout handling
+      CompletableFuture.allOf(marketDataFuture, riskFuture, analyticsFuture)
+          .orTimeout(maxWaitTime, TimeUnit.MILLISECONDS);
+    category: "API_ORCHESTRATION"
+    
+  - name: "Circuit Breaker Pattern"
+    description: "Implement circuit breaker for downstream API failures"
+    validation: "Circuit breaker opens after 5 consecutive failures"
+    implementation: |
+      circuitBreakerConfig = CircuitBreakerConfig.custom()
+          .failureRateThreshold(50)
+          .waitDurationInOpenState(Duration.ofSeconds(30))
+          .slidingWindowSize(10)
+          .minimumNumberOfCalls(5)
+          .build();
+      
+      // Apply circuit breaker to downstream calls
+      @CircuitBreaker(name = "custodian-api", fallbackMethod = "getCachedHoldings")
+      public HoldingsResponse getHoldingsFromCustodian(String customerId) {
+          return custodianApiClient.getHoldings(customerId);
+      }
+    category: "RESILIENCE"
+    
+  - name: "Data Consistency Validation"
+    description: "Validate data consistency across multiple downstream sources"
+    validation: "Holdings quantities must match between custodian and clearing systems"
+    implementation: |
+      custodianHoldings = custodianClient.getHoldings(customerId);
+      clearingHoldings = clearingClient.getHoldings(customerId);
+      
+      for (String symbol : custodianHoldings.getSymbols()) {
+          BigDecimal custodianQty = custodianHoldings.getQuantity(symbol);
+          BigDecimal clearingQty = clearingHoldings.getQuantity(symbol);
+          BigDecimal variance = custodianQty.subtract(clearingQty).abs();
+          
+          if (variance.compareTo(TOLERANCE_THRESHOLD) > 0) {
+              consistencyAlerts.add(new DataInconsistencyAlert(symbol, custodianQty, clearingQty));
+          }
+      }
+    category: "DATA_VALIDATION"
+    
+  - name: "Smart Caching Strategy"
+    description: "Implement intelligent caching based on data volatility and freshness requirements"
+    validation: "Market prices cached for max 60 seconds, holdings data for max 5 minutes"
+    implementation: |
+      // Dynamic TTL based on market hours and volatility
+      boolean marketOpen = marketScheduleService.isMarketOpen();
+      BigDecimal volatility = getSymbolVolatility(symbol);
+      
+      Duration cacheTTL;
+      if (!marketOpen) {
+          cacheTTL = Duration.ofMinutes(15); // Longer cache during market close
+      } else if (volatility.compareTo(HIGH_VOLATILITY_THRESHOLD) > 0) {
+          cacheTTL = Duration.ofSeconds(30); // Shorter cache for volatile stocks
+      } else {
+          cacheTTL = Duration.ofMinutes(2); // Standard cache duration
+      }
+      
+      redisTemplate.opsForValue().set(cacheKey, data, cacheTTL);
+    category: "CACHING_STRATEGY"
+    
+  - name: "Fallback Data Sources"
+    description: "Implement fallback mechanisms when primary data sources are unavailable"
+    validation: "Secondary data sources activated when primary sources fail"
+    implementation: |
+      @Retryable(value = {ApiException.class}, maxAttempts = 3)
+      @Recover
+      public HoldingsResponse getHoldingsWithFallback(String customerId, Exception ex) {
+          // Try secondary custodian
+          try {
+              return secondaryCustodianClient.getHoldings(customerId);
+          } catch (Exception e) {
+              // Fall back to cached data
+              HoldingsResponse cached = cacheService.getCachedHoldings(customerId);
+              if (cached != null && !isStale(cached)) {
+                  cached.setDataSource("CACHE_FALLBACK");
+                  return cached;
+              }
+              throw new DataUnavailableException("All data sources unavailable");
+          }
+      }
+    category: "FALLBACK_STRATEGY"
+    
+  - name: "Rate Limiting and Throttling"
+    description: "Implement rate limiting for downstream API calls to prevent quota exhaustion"
+    validation: "API calls must respect downstream system rate limits"
+    implementation: |
+      // Implement token bucket algorithm
+      @RateLimiter(name = "market-data-api", fallbackMethod = "getFromCache")
+      public MarketDataResponse getMarketData(List<String> symbols) {
+          // Batch symbols to optimize API calls
+          List<List<String>> batches = ListUtils.partition(symbols, MAX_SYMBOLS_PER_CALL);
+          
+          return batches.parallelStream()
+              .map(batch -> marketDataClient.getPrices(batch))
+              .collect(Collectors.toList())
+              .stream()
+              .reduce(MarketDataResponse::merge)
+              .orElse(new MarketDataResponse());
+      }
+    category: "RATE_LIMITING"
+    
+  - name: "Real-Time Price Aggregation"
+    description: "Aggregate real-time prices from multiple market data providers"
+    validation: "Price variance between providers must be within acceptable tolerance"
+    implementation: |
+      List<CompletableFuture<PriceData>> priceFutures = marketDataProviders.stream()
+          .map(provider -> CompletableFuture.supplyAsync(() -> 
+              provider.getPrice(symbol)))
+          .collect(Collectors.toList());
+      
+      List<PriceData> prices = priceFutures.stream()
+          .map(CompletableFuture::join)
+          .filter(Objects::nonNull)
+          .collect(Collectors.toList());
+      
+      // Calculate consensus price with outlier detection
+      BigDecimal consensusPrice = calculateConsensusPrice(prices);
+      validatePriceConsistency(prices, consensusPrice);
+    category: "PRICE_AGGREGATION"
+    
+  - name: "Asynchronous Processing"
+    description: "Process analytics and risk calculations asynchronously to improve response times"
+    validation: "Core holdings data returned immediately, analytics calculated in background"
+    implementation: |
+      @Async("portfolioAnalyticsExecutor")
+      public CompletableFuture<AnalyticsData> calculatePortfolioAnalytics(
+          String customerId, List<Holding> holdings) {
+          
+          // Heavy computation performed asynchronously
+          AnalyticsData analytics = portfolioAnalyticsService.calculate(holdings);
+          
+          // Cache results for future requests
+          cacheService.cacheAnalytics(customerId, analytics);
+          
+          // Publish event for real-time updates
+          eventPublisher.publishAnalyticsUpdate(customerId, analytics);
+          
+          return CompletableFuture.completedFuture(analytics);
+      }
+    category: "ASYNC_PROCESSING"
+    
+  - name: "API Response Enrichment"
+    description: "Enrich basic holdings data with calculated fields and derived metrics"
+    validation: "All monetary values must be calculated in specified currency"
+    implementation: |
+      // Enrich holdings with calculated fields
+      for (Holding holding : holdings) {
+          // Calculate market value
+          BigDecimal marketValue = holding.getQuantity()
+              .multiply(holding.getCurrentPrice());
+          holding.setMarketValue(currencyConverter.convert(marketValue, targetCurrency));
+          
+          // Calculate unrealized gain/loss
+          BigDecimal costBasis = holding.getQuantity()
+              .multiply(holding.getAverageCostBasis());
+          BigDecimal unrealizedGainLoss = marketValue.subtract(costBasis);
+          holding.setUnrealizedGainLoss(unrealizedGainLoss);
+          
+          // Calculate portfolio weight
+          BigDecimal portfolioWeight = marketValue
+              .divide(totalPortfolioValue, 4, RoundingMode.HALF_UP);
+          holding.setPortfolioWeight(portfolioWeight);
+      }
+    category: "DATA_ENRICHMENT"
+    
+  - name: "Error Correlation and Recovery"
+    description: "Correlate errors across downstream systems and implement smart recovery"
+    validation: "System must handle partial failures gracefully"
+    implementation: |
+      public HoldingsResponse getHoldingsWithErrorHandling(String customerId) {
+          Map<String, Exception> errors = new HashMap<>();
+          HoldingsResponse response = new HoldingsResponse();
+          
+          // Attempt to get core data
+          try {
+              response.setHoldings(custodianClient.getHoldings(customerId));
+          } catch (Exception e) {
+              errors.put("custodian", e);
+              response.setHoldings(getCachedHoldings(customerId));
+              response.addWarning("Using cached holdings data");
+          }
+          
+          // Attempt enrichment (non-blocking)
+          try {
+              enrichWithMarketData(response);
+          } catch (Exception e) {
+              errors.put("market_data", e);
+              response.addWarning("Market data unavailable");
+          }
+          
+          // Set degraded service indicators
+          response.setServiceStatus(errors.isEmpty() ? "FULL" : "DEGRADED");
+          response.setErrors(errors);
+          
+          return response;
+      }
+    category: "ERROR_HANDLING"
+
+# External System Integrations and API Clients
+integrations:
+  - name: "Custodian Bank API Client"
+    description: "Primary source for customer holdings data"
+    endpoint: "${CUSTODIAN_API_BASE_URL}/api/v2/customers/{customerId}/holdings"
+    methods: ["GET"]
+    authentication: "OAuth2"
+    timeout: "10000ms"
+    retry_policy:
+      max_attempts: 3
+      backoff_strategy: "exponential"
+      initial_delay: "1000ms"
+      max_delay: "10000ms"
+    circuit_breaker:
+      failure_threshold: 5
+      recovery_timeout: "30000ms"
+      half_open_max_calls: 3
+    features:
+      - "Real-time holdings data"
+      - "Account balances"
+      - "Transaction history"
+      - "Corporate actions"
+      - "Settlement status"
+    
+  - name: "Market Data Provider API"
+    description: "Real-time and historical market prices"
+    endpoint: "${MARKET_DATA_API_BASE_URL}/api/v3/quotes"
+    methods: ["GET", "POST"]
+    authentication: "API_KEY"
+    timeout: "5000ms"
+    rate_limit:
+      requests_per_second: 100
+      burst_capacity: 200
+    features:
+      - "Real-time price feeds"
+      - "Historical OHLC data"
+      - "Volume and volatility"
+      - "Dividend schedules"
+      - "Corporate events"
+      - "After-hours trading data"
+    
+  - name: "Risk Engine API"
+    description: "Portfolio risk calculations and VaR modeling"
+    endpoint: "${RISK_ENGINE_API_BASE_URL}/api/v1/portfolio/risk"
+    methods: ["POST"]
+    authentication: "JWT"
+    timeout: "15000ms"
+    features:
+      - "Value-at-Risk calculations"
+      - "Stress testing scenarios"
+      - "Correlation analysis"
+      - "Beta calculations"
+      - "Portfolio optimization"
+    
+  - name: "Portfolio Analytics Service"
+    description: "Advanced portfolio performance and attribution analysis"
+    endpoint: "${ANALYTICS_API_BASE_URL}/api/v2/analytics"
+    methods: ["POST", "GET"]
+    authentication: "OAuth2"
+    timeout: "8000ms"
+    features:
+      - "Performance attribution"
+      - "Benchmark comparison"
+      - "Risk-adjusted returns"
+      - "Drawdown analysis"
+      - "Factor exposure"
+    
+  - name: "Compliance Monitoring API"
+    description: "Regulatory compliance and restriction checks"
+    endpoint: "${COMPLIANCE_API_BASE_URL}/api/v1/compliance"
+    methods: ["POST", "GET"]
+    authentication: "mTLS"
+    timeout: "12000ms"
+    features:
+      - "Position limit monitoring"
+      - "Restricted securities check"
+      - "Wash sale detection"
+      - "Insider trading rules"
+      - "Regulatory reporting"
+    
+  - name: "Currency Exchange Rate API"
+    description: "Real-time foreign exchange rates for multi-currency portfolios"
+    endpoint: "${FX_API_BASE_URL}/api/v1/rates"
+    methods: ["GET"]
+    authentication: "API_KEY"
+    timeout: "3000ms"
+    cache_duration: "60000ms"
+    features:
+      - "Real-time FX rates"
+      - "Historical rates"
+      - "Currency conversion"
+      - "Cross-rate calculations"
+    
+  - name: "Tax Calculation Service"
+    description: "Tax lot tracking and gain/loss calculations"
+    endpoint: "${TAX_API_BASE_URL}/api/v2/tax"
+    methods: ["POST", "GET"]
+    authentication: "OAuth2"
+    timeout: "10000ms"
+    features:
+      - "Tax lot optimization"
+      - "Wash sale detection"
+      - "Cost basis tracking"
+      - "Realized gain/loss"
+      - "Tax-loss harvesting"
+    
+  - name: "Reference Data Service"
+    description: "Security master data and corporate actions"
+    endpoint: "${REFERENCE_DATA_API_BASE_URL}/api/v1/securities"
+    methods: ["GET"]
+    authentication: "API_KEY"
+    timeout: "5000ms"
+    cache_duration: "3600000ms"
+    features:
+      - "Security master data"
+      - "CUSIP/ISIN mapping"
+      - "Corporate actions"
+      - "Dividend schedules"
+      - "Stock splits and mergers"
+
+# Caching Strategy
+caching:
+  redis_config:
+    clusters: ["cache-cluster-1", "cache-cluster-2"]
+    ttl_configurations:
+      market_prices: "60_seconds"
+      portfolio_analytics: "5_minutes"
+      risk_metrics: "15_minutes"
+      customer_holdings: "30_seconds"
+      historical_data: "1_hour"
+    cache_patterns:
+      - pattern: "market:price:{symbol}"
+        ttl: "60s"
+      - pattern: "portfolio:analytics:{customerId}"
+        ttl: "300s"
+      - pattern: "risk:metrics:{portfolioId}"
+        ttl: "900s"
+
+# Performance Requirements and SLA
+performance:
+  api_response_time:
+    get_holdings: "< 100ms (excluding downstream calls)"
+    portfolio_analytics: "< 500ms (orchestrated from 3 APIs)"
+    risk_assessment: "< 2000ms (risk engine API + calculations)"
+    performance_analysis: "< 1000ms (analytics API + aggregation)"
+    validation: "< 5000ms (multi-source validation)"
+  downstream_api_targets:
+    custodian_api: "< 50ms"
+    market_data_api: "< 20ms"
+    risk_engine_api: "< 200ms"
+    portfolio_analytics_api: "< 300ms"
+    compliance_api: "< 100ms"
+  throughput:
+    target: "5000 requests/minute (per instance)"
+    peak: "15000 requests/minute (with auto-scaling)"
+    burst: "25000 requests/minute (with circuit breakers)"
+    downstream_rate_limits:
+      custodian_api: "10000/minute"
+      market_data_api: "50000/minute"
+      risk_engine_api: "2000/minute"
+      portfolio_analytics_api: "5000/minute"
+      compliance_api: "3000/minute"
+  availability:
+    uptime_sla: "99.95% (composite across all dependencies)"
+    planned_downtime: "< 2 hours/month"
+    disaster_recovery_rto: "< 30 minutes"
+    disaster_recovery_rpo: "< 5 minutes"
+    dependency_tolerance:
+      minimum_services_required: 3
+      degraded_mode_threshold: "60% of services"
+      fallback_data_staleness: "< 1 hour"
+  api_data_freshness:
+    market_prices: "< 1 minute (from market data API)"
+    portfolio_values: "< 30 seconds (cached with invalidation)"
+    risk_metrics: "< 5 minutes (risk engine API)"
+    compliance_status: "< 15 minutes (compliance API)"
+    customer_data: "< 5 minutes (custodian API)"
+  circuit_breaker_settings:
+    failure_threshold: 5
+    timeout: "10s"
+    recovery_timeout: "30s"
+    half_open_max_calls: 3
+  cache_performance:
+    hit_ratio_target: "> 85%"
+    cache_response_time: "< 5ms"
+    cache_warming_success_rate: "> 95%"
+    invalidation_propagation: "< 10s"
+
+# Error Handling and Exception Management for API Integration
+error_responses:
+  CustomerNotFoundException:
+    code: "CUSTOMER_NOT_FOUND"
+    message: "Customer with ID {customerId} not found in custodian system"
+    http_status: 404
+    retry_strategy: "none"
+    
+  HoldingNotFoundException:
+    code: "HOLDING_NOT_FOUND"
+    message: "Share holding with ID {holdingId} not found in portfolio system"
+    http_status: 404
+    retry_strategy: "none"
+    
+  InsufficientPermissionsException:
+    code: "INSUFFICIENT_PERMISSIONS"
+    message: "Insufficient permissions to access customer holdings"
+    http_status: 403
+    retry_strategy: "none"
+    
+  DownstreamApiUnavailableException:
+    code: "DOWNSTREAM_SERVICE_UNAVAILABLE"
+    message: "Required service {serviceName} is currently unavailable"
+    http_status: 503
+    retry_strategy: "exponential_backoff"
+    circuit_breaker_action: "open"
+    
+  DownstreamApiTimeoutException:
+    code: "DOWNSTREAM_SERVICE_TIMEOUT"
+    message: "Service {serviceName} request timed out after {timeout}ms"
+    http_status: 504
+    retry_strategy: "immediate_retry"
+    max_retries: 2
+    
+  MarketDataUnavailableException:
+    code: "MARKET_DATA_UNAVAILABLE"
+    message: "Market data temporarily unavailable for {symbol} from {provider}"
+    http_status: 503
+    retry_strategy: "exponential_backoff"
+    fallback_action: "use_cached_data"
+    
+  ValidationException:
+    code: "VALIDATION_ERROR"
+    message: "Holdings validation failed: {details}"
+    http_status: 422
+    retry_strategy: "none"
+    
+  CalculationException:
+    code: "CALCULATION_ERROR"
+    message: "Portfolio calculation failed: {reason}"
+    http_status: 500
+    retry_strategy: "immediate_retry"
+    max_retries: 1
+    
+  DataInconsistencyException:
+    code: "DATA_INCONSISTENCY"
+    message: "Inconsistent data detected across sources: {inconsistencies}"
+    http_status: 409
+    retry_strategy: "delayed_retry"
+    reconciliation_required: true
+    
+  RateLimitExceededException:
+    code: "RATE_LIMIT_EXCEEDED"
+    message: "Rate limit exceeded for {serviceName}: {currentRate}/{limitRate}"
+    http_status: 429
+    retry_strategy: "exponential_backoff"
+    backoff_duration: "PT30S"
+    
+  CircuitBreakerOpenException:
+    code: "CIRCUIT_BREAKER_OPEN"
+    message: "Circuit breaker is open for {serviceName}"
+    http_status: 503
+    retry_strategy: "none"
+    fallback_action: "use_cached_data_or_degraded_service"
+    
+  AggregationException:
+    code: "AGGREGATION_ERROR"
+    message: "Failed to aggregate data from multiple sources: {sources}"
+    http_status: 502
+    retry_strategy: "selective_retry"
+    partial_response_allowed: true
+    
+  ComplianceValidationException:
+    code: "COMPLIANCE_VALIDATION_FAILED"
+    message: "Compliance validation failed: {violations}"
+    http_status: 422
+    retry_strategy: "none"
+    requires_manual_review: true
+    http_status: 500
+    
+  ExternalSystemException:
+    code: "EXTERNAL_SYSTEM_ERROR"
+    message: "External system {systemName} is unavailable"
+    http_status: 503
+    
+  DataInconsistencyException:
+    code: "DATA_INCONSISTENCY"
+    message: "Data inconsistency detected: {details}"
+    http_status: 422
+
+# Security Configuration
+security:
+  authentication:
+    type: "OAuth2"
+    header: "Authorization"
+    prefix: "Bearer "
+    token_validation: "external"
+  authorization:
+    roles:
+      - "PORTFOLIO_MANAGER"
+      - "INVESTMENT_ADVISOR"
+      - "COMPLIANCE_OFFICER"
+      - "CUSTOMER_SERVICE"
+      - "RISK_ANALYST"
+      - "AUDITOR"
+    permissions:
+      view_holdings: ["PORTFOLIO_MANAGER", "INVESTMENT_ADVISOR", "COMPLIANCE_OFFICER", "CUSTOMER_SERVICE"]
+      view_analytics: ["PORTFOLIO_MANAGER", "INVESTMENT_ADVISOR", "RISK_ANALYST"]
+      view_risk_metrics: ["PORTFOLIO_MANAGER", "INVESTMENT_ADVISOR", "RISK_ANALYST", "COMPLIANCE_OFFICER"]
+      validate_holdings: ["PORTFOLIO_MANAGER", "COMPLIANCE_OFFICER", "AUDITOR"]
+      view_tax_info: ["PORTFOLIO_MANAGER", "INVESTMENT_ADVISOR"]
+  data_encryption:
+    at_rest: "AES-256"
+    in_transit: "TLS 1.3"
+    pii_fields: ["customer_name", "account_number", "ssn"]
+  audit_logging:
+    enabled: true
+    events: ["HOLDINGS_ACCESS", "PORTFOLIO_CALCULATION", "RISK_ASSESSMENT", "VALIDATION_REQUEST"]
+
+# Compliance and Regulatory
+compliance:
+  regulations:
+    - "SEC_RULE_15C3_3"
+    - "FINRA_4512"
+    - "MiFID_II"
+    - "GDPR"
+    - "SOX_404"
+  reporting:
+    frequency: "daily"
+    formats: ["JSON", "XML", "CSV"]
+    destinations: ["regulatory_portal", "internal_systems"]
+  data_retention:
+    holdings_data: "7_years"
+    transaction_history: "10_years"
+    audit_logs: "7_years"
+    customer_communications: "3_years"
+
+# Monitoring and Alerting
+monitoring:
+  business_metrics:
+    - "portfolio_value_accuracy"
+    - "price_feed_latency"
+    - "calculation_accuracy"
+    - "validation_success_rate"
+    - "customer_access_patterns"
+  technical_metrics:
+    - "api_response_time"
+    - "cache_hit_ratio"
+    - "external_system_latency"
+    - "database_query_performance"
+  alerting:
+    channels: ["pagerduty", "slack", "email", "teams"]
+    escalation_matrix:
+      level_1: "2_minutes"
+      level_2: "10_minutes"
+      level_3: "30_minutes"
+  dashboards:
+    - "portfolio_performance_dashboard"
+    - "risk_monitoring_dashboard"
+    - "system_health_dashboard"
+    - "compliance_dashboard"

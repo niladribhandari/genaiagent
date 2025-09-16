@@ -1,0 +1,87 @@
+# API Spec Writing Agent Requirements
+
+# Core dependencies
+python-dotenv>=1.0.0
+pyyaml>=6.0
+pydantic>=2.0.0
+
+# AI and language models
+openai>=1.0.0
+tiktoken>=0.5.0
+
+# OpenAPI/Swagger support
+openapi-spec-validator>=0.6.0
+swagger-spec-validator>=3.0.0
+openapi-schema-validator>=0.4.0
+apispec>=6.0.0
+
+# YAML and JSON processing
+ruamel.yaml>=0.17.0
+jsonschema>=4.17.0
+jsonref>=1.1.0
+
+# HTTP and API utilities
+requests>=2.28.0
+aiohttp>=3.8.0
+fastapi>=0.95.0
+starlette>=0.26.0
+
+# Template engines
+jinja2>=3.1.0
+mako>=1.2.0
+
+# Documentation generation
+mkdocs>=1.4.0
+mkdocs-material>=9.0.0
+sphinx>=5.3.0
+
+# Code generation utilities
+cookiecutter>=2.1.0
+inflection>=0.5.1
+
+# Validation and testing
+cerberus>=1.3.0
+marshmallow>=3.19.0
+
+# File handling
+aiofiles>=0.8.0
+
+# URL and path utilities
+yarl>=1.8.0
+furl>=2.1.0
+
+# Data processing
+pandas>=1.5.0
+numpy>=1.21.0
+
+# Mock server capabilities
+responses>=0.22.0
+
+# Async support
+asyncio-throttle>=1.0.2
+
+# Configuration management
+configparser>=5.3.0
+click>=8.1.0
+
+# Logging
+structlog>=22.1.0
+colorlog>=6.7.0
+
+# Security utilities
+cryptography>=39.0.0
+
+# Testing and development
+pytest>=7.0.0
+pytest-asyncio>=0.20.0
+pytest-mock>=3.8.0
+pytest-cov>=4.0.0
+
+# Code quality
+black>=22.0.0
+flake8>=5.0.0
+mypy>=0.991
+
+# Example generation
+faker>=18.0.0
+factory-boy>=3.2.0

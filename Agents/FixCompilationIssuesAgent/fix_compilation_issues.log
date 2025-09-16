@@ -1,0 +1,148 @@
+2025-09-13 23:50:51,550 - __main__ - INFO - Initializing Fix Compilation Issues Agent...
+2025-09-13 23:50:51,551 - FixCompilationIssuesAgent - WARNING - OpenAI API key not provided or OpenAI package not installed
+2025-09-13 23:50:51,551 - __main__ - INFO - Fixing compilation issues in: /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124
+2025-09-13 23:50:51,551 - FixCompilationIssuesAgent - INFO - Starting compilation fix process for: /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124
+2025-09-13 23:50:51,552 - __main__ - INFO - Results written to: -
+2025-09-13 23:50:51,552 - __main__ - INFO - Fix Compilation Issues Agent completed successfully
+2025-09-13 23:54:34,832 - __main__ - INFO - Initializing Fix Compilation Issues Agent...
+2025-09-13 23:54:35,023 - __main__ - INFO - Fixing compilation issues in: /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124
+2025-09-13 23:54:35,026 - FixCompilationIssuesAgent - INFO - Starting compilation fix process for: /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124
+2025-09-13 23:54:35,035 - __main__ - INFO - Results written to: -
+2025-09-13 23:54:35,035 - __main__ - INFO - Fix Compilation Issues Agent completed successfully
+2025-09-13 23:55:28,908 - __main__ - INFO - Initializing Fix Compilation Issues Agent...
+2025-09-13 23:55:28,956 - __main__ - INFO - Fixing compilation issues in: /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124
+2025-09-13 23:55:28,957 - FixCompilationIssuesAgent - INFO - Starting compilation fix process for: /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124
+2025-09-13 23:55:28,957 - FixCompilationIssuesAgent - ERROR - Error in fix process: 'str' object has no attribute 'get'
+2025-09-13 23:55:28,958 - __main__ - INFO - Results written to: -
+2025-09-13 23:55:28,958 - __main__ - INFO - Fix Compilation Issues Agent completed successfully
+2025-09-14 00:15:30,946 - __main__ - INFO - Initializing Fix Compilation Issues Agent...
+2025-09-14 00:15:30,984 - __main__ - INFO - Fixing compilation issues in: /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124
+2025-09-14 00:15:30,984 - FixCompilationIssuesAgent - INFO - Starting compilation fix process for: /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124
+2025-09-14 00:15:30,984 - FixCompilationIssuesAgent - INFO - No structured errors provided, analyzing build output...
+2025-09-14 00:15:30,986 - FixCompilationIssuesAgent - INFO - Parsed 2 errors from build output
+2025-09-14 00:15:30,986 - FixCompilationIssuesAgent - INFO - Extracted 2 errors from build output
+2025-09-14 00:15:30,986 - FixCompilationIssuesAgent - INFO - Analyzed 2 errors: {'most_common_type': 'other', 'files_affected': 0, 'error_count': 2, 'warning_count': 0}
+2025-09-14 00:15:30,986 - FixCompilationIssuesAgent - INFO - Fix process completed: Fixed 0 issues. 1 errors remain.
+2025-09-14 00:15:30,988 - __main__ - INFO - Results written to: -
+2025-09-14 00:15:30,988 - __main__ - INFO - Fix Compilation Issues Agent completed successfully
+2025-09-14 00:24:19,678 - __main__ - INFO - Initializing Fix Compilation Issues Agent...
+2025-09-14 00:24:19,985 - __main__ - INFO - Fixing compilation issues in: /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124
+2025-09-14 00:24:19,986 - FixCompilationIssuesAgent - INFO - Starting compilation fix process for: /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124
+2025-09-14 00:24:19,986 - FixCompilationIssuesAgent - INFO - No structured errors provided, analyzing build output...
+2025-09-14 00:24:19,989 - FixCompilationIssuesAgent - INFO - Parsed 2 errors from build output
+2025-09-14 00:24:19,989 - FixCompilationIssuesAgent - INFO - Extracted 2 errors from build output
+2025-09-14 00:24:19,989 - FixCompilationIssuesAgent - INFO - Analyzed 2 errors: {'most_common_type': 'other', 'files_affected': 0, 'error_count': 2, 'warning_count': 0}
+2025-09-14 00:24:19,990 - FixCompilationIssuesAgent - INFO - Fix process completed: Fixed 0 issues. 1 errors remain.
+2025-09-14 00:24:19,996 - __main__ - INFO - Results written to: -
+2025-09-14 00:24:19,996 - __main__ - INFO - Fix Compilation Issues Agent completed successfully
+2025-09-14 00:28:22,103 - __main__ - INFO - Initializing Fix Compilation Issues Agent...
+2025-09-14 00:28:22,153 - __main__ - INFO - Fixing compilation issues in: /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124
+2025-09-14 00:28:22,153 - FixCompilationIssuesAgent - INFO - Starting compilation fix process for: /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124
+2025-09-14 00:28:22,153 - FixCompilationIssuesAgent - INFO - No structured errors provided, analyzing build output...
+2025-09-14 00:28:22,153 - FixCompilationIssuesAgent - INFO - Parsed 0 errors from build output
+2025-09-14 00:28:22,153 - FixCompilationIssuesAgent - INFO - Extracted 0 errors from build output
+2025-09-14 00:28:22,153 - FixCompilationIssuesAgent - INFO - Analyzed 0 errors: {'most_common_type': 'unknown', 'files_affected': 0, 'error_count': 0, 'warning_count': 0}
+2025-09-14 00:28:22,154 - FixCompilationIssuesAgent - INFO - Fix process completed: Fixed 0 issues. 0 errors remain.
+2025-09-14 00:28:22,156 - __main__ - INFO - Results written to: -
+2025-09-14 00:28:22,156 - __main__ - INFO - Fix Compilation Issues Agent completed successfully
+2025-09-14 00:30:08,989 - __main__ - INFO - Initializing Fix Compilation Issues Agent...
+2025-09-14 00:30:09,032 - __main__ - INFO - Fixing compilation issues in: /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124
+2025-09-14 00:30:09,032 - FixCompilationIssuesAgent - INFO - Starting compilation fix process for: /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124
+2025-09-14 00:30:09,032 - FixCompilationIssuesAgent - INFO - No structured errors provided, analyzing build output...
+2025-09-14 00:30:09,033 - FixCompilationIssuesAgent - INFO - Parsed 2 errors from build output
+2025-09-14 00:30:09,034 - FixCompilationIssuesAgent - INFO - Extracted 2 errors from build output
+2025-09-14 00:30:09,034 - FixCompilationIssuesAgent - INFO - Analyzed 2 errors: {'most_common_type': 'other', 'files_affected': 0, 'error_count': 2, 'warning_count': 0}
+2025-09-14 00:30:09,034 - FixCompilationIssuesAgent - INFO - Fix process completed: Fixed 0 issues. 1 errors remain.
+2025-09-14 00:30:09,038 - __main__ - INFO - Results written to: -
+2025-09-14 00:30:09,038 - __main__ - INFO - Fix Compilation Issues Agent completed successfully
+2025-09-14 00:35:50,654 - __main__ - INFO - Initializing Fix Compilation Issues Agent...
+2025-09-14 00:35:50,698 - __main__ - INFO - Fixing compilation issues in: /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124
+2025-09-14 00:35:50,698 - FixCompilationIssuesAgent - INFO - Starting compilation fix process for: /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124
+2025-09-14 00:35:50,698 - FixCompilationIssuesAgent - INFO - No structured errors provided, analyzing build output...
+2025-09-14 00:35:50,699 - FixCompilationIssuesAgent - INFO - Parsed 2 errors from build output
+2025-09-14 00:35:50,700 - FixCompilationIssuesAgent - INFO - Extracted 2 errors from build output
+2025-09-14 00:35:50,700 - FixCompilationIssuesAgent - INFO - Analyzed 2 errors: {'most_common_type': 'other', 'files_affected': 0, 'error_count': 2, 'warning_count': 0}
+2025-09-14 00:35:50,700 - FixCompilationIssuesAgent - INFO - Fix process completed: Fixed 0 issues. 1 errors remain.
+2025-09-14 00:35:50,701 - __main__ - INFO - Results written to: -
+2025-09-14 00:35:50,701 - __main__ - INFO - Fix Compilation Issues Agent completed successfully
+2025-09-14 00:41:23,704 - __main__ - INFO - Initializing Fix Compilation Issues Agent...
+2025-09-14 00:41:23,704 - FixCompilationIssuesAgent - WARNING - OpenAI API key not provided or OpenAI package not installed
+2025-09-14 00:41:23,704 - __main__ - INFO - Fixing compilation issues in: /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124
+2025-09-14 00:41:23,704 - FixCompilationIssuesAgent - INFO - Starting compilation fix process for: /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124
+2025-09-14 00:41:23,704 - FixCompilationIssuesAgent - INFO - No structured errors provided, analyzing build output...
+2025-09-14 00:41:23,704 - FixCompilationIssuesAgent - INFO - Parsed 0 errors from build output
+2025-09-14 00:41:23,704 - FixCompilationIssuesAgent - INFO - Extracted 0 errors from build output
+2025-09-14 00:41:23,704 - FixCompilationIssuesAgent - INFO - Analyzed 0 errors: {'most_common_type': 'unknown', 'files_affected': 0, 'error_count': 0, 'warning_count': 0}
+2025-09-14 00:41:23,704 - FixCompilationIssuesAgent - WARNING - OpenAI client not available, generating basic fixes
+2025-09-14 00:41:23,705 - FixCompilationIssuesAgent - INFO - Fix process completed: Fixed 0 issues. 0 errors remain.
+2025-09-14 00:41:23,706 - __main__ - INFO - Results written to: -
+2025-09-14 00:41:23,706 - __main__ - INFO - Fix Compilation Issues Agent completed successfully
+2025-09-14 00:44:59,344 - __main__ - INFO - Initializing Fix Compilation Issues Agent...
+2025-09-14 00:44:59,409 - __main__ - INFO - Fixing compilation issues in: /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124
+2025-09-14 00:44:59,409 - FixCompilationIssuesAgent - INFO - Starting compilation fix process for: /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124
+2025-09-14 00:44:59,409 - FixCompilationIssuesAgent - INFO - No structured errors provided, analyzing build output...
+2025-09-14 00:44:59,409 - FixCompilationIssuesAgent - INFO - Parsed 1 errors from build output
+2025-09-14 00:44:59,409 - FixCompilationIssuesAgent - INFO - Extracted 1 errors from build output
+2025-09-14 00:44:59,409 - FixCompilationIssuesAgent - INFO - Analyzed 1 errors: {'most_common_type': 'illegal_character', 'files_affected': 1, 'error_count': 1, 'warning_count': 0}
+2025-09-14 00:44:59,409 - FixCompilationIssuesAgent - INFO - Attempting to fix file: /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124/src/main/java/com/policycorp/insurance/policy/service/CustomerService.java
+2025-09-14 00:45:01,266 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 401 Unauthorized"
+2025-09-14 00:45:01,271 - FixCompilationIssuesAgent - ERROR - Error generating AI fix for /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124/src/main/java/com/policycorp/insurance/policy/service/CustomerService.java: Error code: 401 - {'error': {'message': 'Incorrect API key provided: sk-proj-***********************************************PjUA. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}}
+2025-09-14 00:45:01,271 - FixCompilationIssuesAgent - INFO - Generated 0 AI fixes
+2025-09-14 00:45:01,273 - FixCompilationIssuesAgent - INFO - Fix process completed: Fixed 0 issues. 1 errors remain.
+2025-09-14 00:45:01,274 - __main__ - INFO - Results written to: -
+2025-09-14 00:45:01,274 - __main__ - INFO - Fix Compilation Issues Agent completed successfully
+2025-09-14 00:45:17,202 - __main__ - INFO - Initializing Fix Compilation Issues Agent...
+2025-09-14 00:45:17,235 - __main__ - INFO - Fixing compilation issues in: /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124
+2025-09-14 00:45:17,235 - FixCompilationIssuesAgent - INFO - Starting compilation fix process for: /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124
+2025-09-14 00:45:17,235 - FixCompilationIssuesAgent - INFO - No structured errors provided, analyzing build output...
+2025-09-14 00:45:17,235 - FixCompilationIssuesAgent - INFO - Parsed 1 errors from build output
+2025-09-14 00:45:17,235 - FixCompilationIssuesAgent - INFO - Extracted 1 errors from build output
+2025-09-14 00:45:17,235 - FixCompilationIssuesAgent - INFO - Analyzed 1 errors: {'most_common_type': 'illegal_character', 'files_affected': 1, 'error_count': 1, 'warning_count': 0}
+2025-09-14 00:45:17,235 - FixCompilationIssuesAgent - INFO - Attempting to fix file: /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124/src/main/java/com/policycorp/insurance/policy/service/CustomerService.java
+2025-09-14 00:45:17,891 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 401 Unauthorized"
+2025-09-14 00:45:17,893 - FixCompilationIssuesAgent - ERROR - Error generating AI fix for /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124/src/main/java/com/policycorp/insurance/policy/service/CustomerService.java: Error code: 401 - {'error': {'message': 'Incorrect API key provided: sk-proj-***********************************************PjUA. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}}
+2025-09-14 00:45:17,893 - FixCompilationIssuesAgent - INFO - Generated 0 AI fixes
+2025-09-14 00:45:17,894 - FixCompilationIssuesAgent - INFO - Fix process completed: Fixed 0 issues. 1 errors remain.
+2025-09-14 00:45:17,895 - __main__ - INFO - Results written to: -
+2025-09-14 00:45:17,896 - __main__ - INFO - Fix Compilation Issues Agent completed successfully
+2025-09-14 00:46:48,219 - __main__ - INFO - Initializing Fix Compilation Issues Agent...
+2025-09-14 00:46:48,256 - __main__ - INFO - Fixing compilation issues in: /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124
+2025-09-14 00:46:48,256 - FixCompilationIssuesAgent - INFO - Starting compilation fix process for: /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124
+2025-09-14 00:46:48,256 - FixCompilationIssuesAgent - INFO - No structured errors provided, analyzing build output...
+2025-09-14 00:46:48,256 - FixCompilationIssuesAgent - INFO - Parsed 1 errors from build output
+2025-09-14 00:46:48,256 - FixCompilationIssuesAgent - INFO - Extracted 1 errors from build output
+2025-09-14 00:46:48,256 - FixCompilationIssuesAgent - INFO - Analyzed 1 errors: {'most_common_type': 'illegal_character', 'files_affected': 1, 'error_count': 1, 'warning_count': 0}
+2025-09-14 00:46:48,256 - FixCompilationIssuesAgent - INFO - Attempting to fix file: /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124/src/main/java/com/policycorp/insurance/policy/service/CustomerService.java
+2025-09-14 00:46:48,929 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 401 Unauthorized"
+2025-09-14 00:46:48,933 - FixCompilationIssuesAgent - ERROR - Error generating AI fix for /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124/src/main/java/com/policycorp/insurance/policy/service/CustomerService.java: Error code: 401 - {'error': {'message': 'Incorrect API key provided: sk-proj-***********************************************PjUA. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}}
+2025-09-14 00:46:48,933 - FixCompilationIssuesAgent - INFO - Generated 0 AI fixes
+2025-09-14 00:46:48,933 - FixCompilationIssuesAgent - WARNING - No AI fixes generated, falling back to basic fixes
+2025-09-14 00:46:48,935 - FixCompilationIssuesAgent - INFO - Fix process completed: Fixed 0 issues. 1 errors remain.
+2025-09-14 00:46:48,936 - __main__ - INFO - Results written to: -
+2025-09-14 00:46:48,936 - __main__ - INFO - Fix Compilation Issues Agent completed successfully
+2025-09-14 00:54:13,698 - __main__ - INFO - Initializing Fix Compilation Issues Agent...
+2025-09-14 00:54:13,924 - __main__ - INFO - Fixing compilation issues in: /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124
+2025-09-14 00:54:13,924 - FixCompilationIssuesAgent - INFO - Starting compilation fix process for: /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124
+2025-09-14 00:54:13,924 - FixCompilationIssuesAgent - INFO - No structured errors provided, analyzing build output...
+2025-09-14 00:54:13,924 - FixCompilationIssuesAgent - INFO - Parsed 1 errors from build output
+2025-09-14 00:54:13,924 - FixCompilationIssuesAgent - INFO - Extracted 1 errors from build output
+2025-09-14 00:54:13,924 - FixCompilationIssuesAgent - INFO - Analyzed 1 errors: {'most_common_type': 'illegal_character', 'files_affected': 1, 'error_count': 1, 'warning_count': 0}
+2025-09-14 00:54:13,924 - FixCompilationIssuesAgent - INFO - Generating AI fix for: /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124/src/main/java/com/policycorp/insurance/policy/service/CustomerService.java
+2025-09-14 00:54:20,478 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-14 00:54:20,495 - FixCompilationIssuesAgent - INFO - Generated 1 AI fixes
+2025-09-14 00:54:20,502 - FixCompilationIssuesAgent - INFO - Backed up: /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124/src/main/java/com/policycorp/insurance/policy/service/CustomerService.java -> /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124/backups/pre_fix_20250914_005413/src/main/java/com/policycorp/insurance/policy/service/CustomerService.java
+2025-09-14 00:54:20,503 - FixCompilationIssuesAgent - INFO - Applied fix to: /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124/src/main/java/com/policycorp/insurance/policy/service/CustomerService.java
+2025-09-14 00:54:20,503 - FixCompilationIssuesAgent - INFO - Fix process completed: Fixed 1 issues. 1 errors remain.
+2025-09-14 00:54:20,520 - __main__ - INFO - Results written to: -
+2025-09-14 00:54:20,520 - __main__ - INFO - Fix Compilation Issues Agent completed successfully
+2025-09-14 00:59:28,271 - __main__ - INFO - Initializing Fix Compilation Issues Agent...
+2025-09-14 00:59:28,311 - __main__ - INFO - Fixing compilation issues in: /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124
+2025-09-14 00:59:28,311 - FixCompilationIssuesAgent - INFO - Starting compilation fix process for: /Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124
+2025-09-14 00:59:28,311 - FixCompilationIssuesAgent - INFO - No structured errors provided, analyzing build output...
+2025-09-14 00:59:28,312 - FixCompilationIssuesAgent - INFO - Parsed 1 errors from build output
+2025-09-14 00:59:28,312 - FixCompilationIssuesAgent - INFO - Extracted 1 errors from build output
+2025-09-14 00:59:28,312 - FixCompilationIssuesAgent - INFO - Analyzed 1 errors: {'most_common_type': 'other', 'files_affected': 0, 'error_count': 1, 'warning_count': 0}
+2025-09-14 00:59:28,312 - FixCompilationIssuesAgent - INFO - Generated 0 AI fixes
+2025-09-14 00:59:28,313 - FixCompilationIssuesAgent - INFO - Fix process completed: Fixed 0 issues. 1 errors remain.
+2025-09-14 00:59:28,321 - __main__ - INFO - Results written to: -
+2025-09-14 00:59:28,321 - __main__ - INFO - Fix Compilation Issues Agent completed successfully

@@ -1,0 +1,217 @@
+language: C#
+framework: ASP.NET Core Web API
+version: 7.0
+description: Clean Architecture based Web API with CQRS pattern
+
+project_info:
+  name: ${API_NAME}API
+  namespace: ${API_NAME}
+  description: ${API_DESCRIPTION}
+
+templates:
+  solution:
+    - ${API_NAME}.sln
+    - .gitignore
+    - README.md
+    - docker-compose.yml
+    - Dockerfile
+  
+  api:
+    - src/${API_NAME}.API/Program.cs
+    - src/${API_NAME}.API/${API_NAME}.API.csproj
+    - src/${API_NAME}.API/appsettings.json
+    - src/${API_NAME}.API/appsettings.Development.json
+    - src/${API_NAME}.API/Properties/launchSettings.json
+    - src/${API_NAME}.API/Controllers/BaseApiController.cs
+    - src/${API_NAME}.API/Filters/ApiExceptionFilterAttribute.cs
+    - src/${API_NAME}.API/Middleware/ExceptionMiddleware.cs
+    - src/${API_NAME}.API/Swagger/SwaggerDefaultValues.cs
+
+  application:
+    - src/${API_NAME}.Application/${API_NAME}.Application.csproj
+    - src/${API_NAME}.Application/Common/Behaviors/ValidationBehavior.cs
+    - src/${API_NAME}.Application/Common/Interfaces/ICurrentUserService.cs
+    - src/${API_NAME}.Application/Common/Models/PaginatedList.cs
+    - src/${API_NAME}.Application/Common/Security/AuthorizeAttribute.cs
+    - src/${API_NAME}.Application/Features/Commands/Create/CreateCommand.cs
+    - src/${API_NAME}.Application/Features/Commands/Update/UpdateCommand.cs
+    - src/${API_NAME}.Application/Features/Commands/Delete/DeleteCommand.cs
+    - src/${API_NAME}.Application/Features/Queries/Get/GetQuery.cs
+    - src/${API_NAME}.Application/Features/Queries/GetList/GetListQuery.cs
+    - src/${API_NAME}.Application/DTOs/RequestDtos.cs
+    - src/${API_NAME}.Application/DTOs/ResponseDtos.cs
+    - src/${API_NAME}.Application/Mappings/MappingProfile.cs
+
+  domain:
+    - src/${API_NAME}.Domain/${API_NAME}.Domain.csproj
+    - src/${API_NAME}.Domain/Entities/BaseEntity.cs
+    - src/${API_NAME}.Domain/Entities/${ENTITY_NAME}.cs
+    - src/${API_NAME}.Domain/Events/${ENTITY_NAME}Event.cs
+    - src/${API_NAME}.Domain/Exceptions/DomainException.cs
+    - src/${API_NAME}.Domain/ValueObjects/ValueObject.cs
+
+  infrastructure:
+    - src/${API_NAME}.Infrastructure/${API_NAME}.Infrastructure.csproj
+    - src/${API_NAME}.Infrastructure/Persistence/ApplicationDbContext.cs
+    - src/${API_NAME}.Infrastructure/Persistence/Configurations/${ENTITY_NAME}Configuration.cs
+    - src/${API_NAME}.Infrastructure/Services/DateTimeService.cs
+    - src/${API_NAME}.Infrastructure/Services/CurrentUserService.cs
+
+  tests:
+    - tests/${API_NAME}.UnitTests/${API_NAME}.UnitTests.csproj
+    - tests/${API_NAME}.UnitTests/Features/Commands/CreateCommandTests.cs
+    - tests/${API_NAME}.UnitTests/Features/Queries/GetQueryTests.cs
+    - tests/${API_NAME}.IntegrationTests/${API_NAME}.IntegrationTests.csproj
+    - tests/${API_NAME}.IntegrationTests/Testing.cs
+
+project_structure:
+  - src/
+    - ${API_NAME}.API/
+      - Controllers/
+      - Filters/
+      - Middleware/
+      - Properties/
+      - Swagger/
+    - ${API_NAME}.Application/
+      - Common/
+        - Behaviors/
+        - Interfaces/
+        - Models/
+        - Security/
+      - Features/
+        - Commands/
+        - Queries/
+      - DTOs/
+      - Mappings/
+    - ${API_NAME}.Domain/
+      - Entities/
+      - Events/
+      - Exceptions/
+      - ValueObjects/
+    - ${API_NAME}.Infrastructure/
+      - Persistence/
+        - Configurations/
+      - Services/
+  - tests/
+    - ${API_NAME}.UnitTests/
+    - ${API_NAME}.IntegrationTests/
+
+code_standards:
+  architecture:
+    - Follow Clean Architecture principles with Domain-Driven Design
+    - Use CQRS pattern with MediatR
+    - Implement Repository and Unit of Work patterns
+    - Follow SOLID principles
+
+  naming:
+    - Use PascalCase for class and method names
+    - Use camelCase for variables and parameters
+    - Prefix interfaces with 'I'
+    - Use meaningful and descriptive names
+
+  coding:
+    - Use async/await for all I/O operations
+    - Implement proper exception handling
+    - Use guard clauses for parameter validation
+    - Follow C# coding conventions
+    - Use expression-bodied members where appropriate
+
+nuget_packages:
+  common:
+    - Microsoft.AspNetCore.OpenApi
+    - Swashbuckle.AspNetCore
+    - AutoMapper.Extensions.Microsoft.DependencyInjection
+    - FluentValidation.AspNetCore
+    - MediatR
+  persistence:
+    - Microsoft.EntityFrameworkCore
+    - Microsoft.EntityFrameworkCore.SqlServer
+    - Microsoft.EntityFrameworkCore.Design
+  security:
+    - Microsoft.AspNetCore.Authentication.JwtBearer
+    - Microsoft.Identity.Web
+  testing:
+    - Microsoft.NET.Test.Sdk
+    - xunit
+    - xunit.runner.visualstudio
+    - Moq
+    - FluentAssertions
+    - Respawn
+
+api_conventions:
+  controllers:
+    - Use [ApiController] and versioned routing [Route("api/v{version:apiVersion}/[controller]")]
+    - Return ActionResult<T> with proper status codes
+    - Use [ProducesResponseType] for all possible responses
+    - Implement proper model validation using FluentValidation
+    - Use cancellation tokens for async operations
+  
+  documentation:
+    - XML comments for all public APIs
+    - Swagger/OpenAPI documentation with examples
+    - Response schemas and error codes
+    - Authentication requirements
+    - Rate limiting details
+
+data_access:
+  patterns:
+    - Repository pattern with specification pattern
+    - Unit of Work pattern
+    - CQRS with MediatR
+  practices:
+    - Use EF Core with code-first approach
+    - Implement database migrations
+    - Use soft delete where appropriate
+    - Implement audit trails
+    - Use value conversions for complex types
+
+security:
+  authentication:
+    - JWT Bearer authentication
+    - OAuth 2.0/OpenID Connect support
+    - Role-based authorization
+  practices:
+    - HTTPS only
+    - Secure headers
+    - API key for machine-to-machine
+    - Rate limiting
+    - Input validation
+
+testing:
+  unit_tests:
+    - Test CQRS handlers
+    - Test domain logic
+    - Test validation rules
+    - Use xUnit and Moq
+  integration_tests:
+    - Test API endpoints
+    - Test database operations
+    - Use TestServer
+    - Use in-memory database
+  practices:
+    - Follow Arrange-Act-Assert
+    - Use meaningful test names
+    - Test edge cases
+    - Use test data builders
+
+logging:
+  setup:
+    - Use Serilog
+    - Structured logging
+    - Multiple sinks (console, file, seq)
+  practices:
+    - Log all exceptions
+    - Include correlation IDs
+    - Use proper log levels
+    - Log performance metrics
+
+monitoring:
+  health_checks:
+    - Database connectivity
+    - External service dependencies
+    - System resources
+  metrics:
+    - Request duration
+    - Error rates
+    - Resource usage
+    - Custom business metrics

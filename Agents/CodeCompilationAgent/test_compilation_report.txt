@@ -1,0 +1,20 @@
+============================================================
+CODE COMPILATION REPORT
+============================================================
+
+Project Path: /Users/niladrib/WorkingFolder/genaiagent/CodeGenerationAgent/generated_examples/policy_management
+Project Type: java_springboot
+Compilation Status: FAILED
+Compilation Time: 0.01 seconds
+
+SUMMARY:
+  Total Issues: 1
+  Errors: 1
+  Warnings: 0
+  Build Successful: False
+
+ERRORS:
+----------------------------------------
+1. Maven (mvn) is not available in PATH
+
+============================================================

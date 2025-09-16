@@ -1,0 +1,719 @@
+metadata:
+  company:
+    name: "CustomerCorp"
+    domain: "customercorp.com"
+    package: "com.customercorp.customer"
+  project:
+    name: "CustomerManagementAPI"
+    description: "Customer management service with update functionality"
+    version: "1.0.0"
+  base_package: "com.customercorp.customer"
+  company_name: "CustomerCorp"
+  company_domain: "customercorp.com"
+  version: 1.1.0
+  description: Add customer update functionality
+  team: Customer Experience
+  owner: tech-lead@company.com
+
+# Language and Framework Configuration
+language: "java"
+framework: "spring boot"
+
+
+# API Configuration
+api:
+  name: "CustomerManagementAPI"
+  version: "v1"
+  base_path: "/api/v1"
+  description: "REST API for managing customers with update operations"
+  
+# Database Configuration
+database:
+  name: "customer_db"
+  user: "customer_user"
+  password: "customer_password"
+  
+# Main Entity
+entity:
+  name: "Customer"
+  description: "Customer entity with update functionality"
+  attributes:
+    - name: "id"
+      type: "UUID"
+      constraints: ["primary_key", "not_null"]
+    - name: "firstName"
+      type: "String"
+      constraints: ["not_null", "min_length:2", "max_length:50"]
+    - name: "lastName"
+      type: "String"
+      constraints: ["not_null", "min_length:2", "max_length:50"]
+    - name: "email"
+      type: "String"
+      constraints: ["not_null", "unique", "email_format"]
+    - name: "phone"
+      type: "String"
+      constraints: ["phone_format"]
+    - name: "dateOfBirth"
+      type: "LocalDate"
+    - name: "address"
+      type: "String"
+      constraints: ["max_length:200"]
+    - name: "customerStatus"
+      type: "Enum"
+      values: ["ACTIVE", "INACTIVE", "SUSPENDED"]
+      default: "ACTIVE"
+    - name: "createdAt"
+      type: "LocalDateTime"
+      constraints: ["not_null"]
+    - name: "updatedAt"
+      type: "LocalDateTime"
+      constraints: ["not_null"]
+  business_rules:
+    - name: "email_uniqueness"
+      description: "Email must be unique across all customers"
+    - name: "age_validation"
+      description: "Customer must be at least 18 years old"
+    - name: "phone_format_validation"
+      description: "Phone number must be in valid international format"
+
+# API Endpoints
+endpoints:
+  - name: "Update Customer"
+    method: "PUT"
+    path: "/customers/{id}"
+    description: "Update customer information"
+    business_logic:
+      - "Validate customer exists"
+      - "Check for email uniqueness if email is being updated"
+      - "Validate age requirements if date of birth is updated"
+      - "Sanitize and format phone number"
+      - "Update customer status audit trail"
+      - "Send customer update notification"
+    request_body:
+      type: "CustomerUpdateRequest"
+      required: true
+      description: "Customer update details"
+    responses:
+      200:
+        description: "Customer updated successfully"
+        content: "CustomerResponse"
+      400:
+        description: "Invalid request data"
+      404:
+        description: "Customer not found"
+      409:
+        description: "Email already exists"
+
+  - name: "Get Customer by ID"
+    method: "GET"
+    path: "/customers/{id}"
+    description: "Retrieve customer details by ID"
+    business_logic:
+      - "Validate customer ID format"
+      - "Check customer exists"
+      - "Apply data privacy filters"
+      - "Log access for audit"
+    parameters:
+      - name: "id"
+        type: "UUID"
+        location: "path"
+        required: true
+        description: "Customer unique identifier"
+    responses:
+      200:
+        description: "Customer retrieved successfully"
+        content: "CustomerResponse"
+      404:
+        description: "Customer not found"
+
+  - name: "Create Customer"
+    method: "POST"
+    path: "/customers"
+    description: "Create a new customer"
+    business_logic:
+      - "Validate all required fields"
+      - "Check email uniqueness"
+      - "Validate age requirements (18+ years)"
+      - "Generate customer ID"
+      - "Set default customer status"
+      - "Send welcome notification"
+      - "Create audit log entry"
+    request_body:
+      type: "CustomerCreateRequest"
+      required: true
+      description: "Customer creation details"
+    responses:
+      201:
+        description: "Customer created successfully"
+        content: "CustomerResponse"
+      400:
+        description: "Invalid request data"
+      409:
+        description: "Email already exists"
+
+  - name: "Get All Customers"
+    method: "GET"
+    path: "/customers"
+    description: "Retrieve all customers with pagination"
+    business_logic:
+      - "Apply pagination limits"
+      - "Filter by customer status if provided"
+      - "Sort by creation date"
+      - "Apply data privacy filters"
+    parameters:
+      - name: "page"
+        type: "Integer"
+        location: "query"
+        default: 0
+        description: "Page number"
+      - name: "size"
+        type: "Integer"
+        location: "query"
+        default: 20
+        description: "Page size"
+      - name: "status"
+        type: "String"
+        location: "query"
+        description: "Filter by customer status"
+    responses:
+      200:
+        description: "Customers retrieved successfully"
+        content: "PagedCustomerResponse"
+
+  - name: "Update Customer Status"
+    method: "PATCH"
+    path: "/customers/{id}/status"
+    description: "Update customer status"
+    business_logic:
+      - "Validate customer exists"
+      - "Check valid status transition"
+      - "Update status with timestamp"
+      - "Create status change audit log"
+      - "Send status change notification"
+    request_body:
+      type: "CustomerStatusUpdateRequest"
+      required: true
+      description: "Status update details"
+    responses:
+      200:
+        description: "Status updated successfully"
+      400:
+        description: "Invalid status transition"
+      404:
+        description: "Customer not found"
+
+configuration:
+  language: Java
+  framework: Spring Boot
+  database: PostgreSQL
+  caching: Redis
+  messaging: Kafka
+
+api_contract:
+  format: OpenAPI
+  version: 3.0.1
+  base_path: /api/v1
+  
+  endpoints:
+    - path: /customers/{id}
+      method: PUT
+      summary: Update customer profile
+      description: Updates an existing customer's information
+      tags: 
+        - Customers
+      security:
+        - JWT: [write]
+      request:
+        content_type: application/json
+        required_headers:
+          - X-Correlation-ID
+        path_parameters:
+          id:
+            type: string
+            format: uuid
+        schema:
+          type: object
+          properties:
+            firstName:
+              type: string
+              minLength: 2
+              maxLength: 50
+            lastName:
+              type: string
+              minLength: 2
+              maxLength: 50
+            phone:
+              type: string
+              pattern: "^\\+?[1-9]\\d{1,14}$"
+      response:
+        success:
+          status: 200
+          content_type: application/json
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              message:
+                type: string
+              updated_at:
+                type: string
+                format: date-time
+        errors:
+          - status: 400
+            description: Invalid input
+          - status: 404
+            description: Customer not found
+
+business_logic:
+  validation_rules:
+    - name: "email_format"
+      description: "Email must be in valid format"
+      pattern: "^[A-Za-z0-9+_.-]+@([A-Za-z0-9.-]+\\.[A-Za-z]{2,})$"
+    
+    - name: "phone_format"
+      description: "Phone must be in international format"
+      pattern: "^\\+[1-9]\\d{1,14}$"
+    
+    - name: "age_validation"
+      description: "Customer must be at least 18 years old"
+      rule: "dateOfBirth <= today() - 18 years"
+    
+    - name: "name_validation"
+      description: "Names must contain only alphabetic characters and spaces"
+      pattern: "^[A-Za-z\\s]+$"
+
+  business_rules:
+    - name: "customer_update_workflow"
+      description: "Complete workflow for updating customer information"
+      steps:
+        - validate_input_data
+        - check_customer_exists
+        - validate_business_rules
+        - check_email_uniqueness
+        - sanitize_data
+        - update_customer_record
+        - create_audit_log
+        - send_notification
+        - update_cache
+    
+    - name: "email_change_workflow"
+      description: "Special handling when email is being changed"
+      steps:
+        - validate_new_email_format
+        - check_email_not_exists
+        - send_email_verification
+        - update_email_pending_verification
+        - create_email_change_audit_log
+    
+    - name: "status_change_workflow"
+      description: "Workflow for changing customer status"
+      valid_transitions:
+        ACTIVE: ["INACTIVE", "SUSPENDED"]
+        INACTIVE: ["ACTIVE"]
+        SUSPENDED: ["ACTIVE", "INACTIVE"]
+      steps:
+        - validate_status_transition
+        - check_permissions
+        - update_status
+        - create_status_audit_log
+        - send_status_notification
+
+  data_processing:
+    - name: "name_sanitization"
+      description: "Clean and format customer names"
+      actions:
+        - trim_whitespace
+        - capitalize_first_letter
+        - remove_extra_spaces
+    
+    - name: "phone_normalization"
+      description: "Normalize phone number format"
+      actions:
+        - remove_non_digits
+        - add_country_code_if_missing
+        - format_to_e164
+    
+    - name: "address_processing"
+      description: "Process and validate address information"
+      actions:
+        - trim_whitespace
+        - validate_postal_code
+        - standardize_format
+
+  audit_logging:
+    - event: "customer_created"
+      fields: ["customerId", "email", "createdBy", "timestamp"]
+    - event: "customer_updated"
+      fields: ["customerId", "changedFields", "oldValues", "newValues", "updatedBy", "timestamp"]
+    - event: "customer_status_changed"
+      fields: ["customerId", "oldStatus", "newStatus", "reason", "changedBy", "timestamp"]
+    - event: "email_changed"
+      fields: ["customerId", "oldEmail", "newEmail", "verificationStatus", "timestamp"]
+
+  notifications:
+    - trigger: "customer_created"
+      type: "welcome_email"
+      template: "customer_welcome"
+      recipients: ["customer"]
+    
+    - trigger: "customer_updated"
+      type: "update_confirmation"
+      template: "profile_updated"
+      recipients: ["customer"]
+    
+    - trigger: "status_changed"
+      type: "status_notification"
+      template: "status_change"
+      recipients: ["customer", "account_manager"]
+    
+    - trigger: "email_changed"
+      type: "email_verification"
+      template: "email_verification"
+      recipients: ["new_email"]
+
+  workflows:
+    - endpoint: PUT /customers/{id}
+      steps:
+        - name: Input Validation
+          description: Validate update fields
+          validations:
+            - field: firstName
+              rules: [optional, minLength=2, maxLength=50, alphaOnly]
+            - field: lastName
+              rules: [optional, minLength=2, maxLength=50, alphaOnly]
+            - field: phone
+              rules: [optional, validPhoneNumber]
+        
+        - name: Customer Lookup
+          description: Verify customer exists
+          query:
+            type: findById
+            table: customers
+        
+        - name: Data Processing
+          description: Process and sanitize input data
+          actions:
+            - trim all string fields
+            - format phone number to E.164
+        
+        - name: Database Operation
+          description: Update customer record
+          transaction:
+            - operation: update
+              table: customers
+              where: id = :id
+              data: 
+                - mapped_fields: [firstName, lastName, phone]
+                - generated_fields: [updated_at]
+        
+        - name: Cache Management
+          description: Update cache and publish event
+          actions:
+            - invalidate: "customer:${id}"
+            - publish_event: CUSTOMER_UPDATED
+            
+      error_handling:
+        validation_errors:
+          response: 400
+          logging: warn
+        customer_not_found:
+          response: 404
+          logging: info
+        system_errors:
+          response: 500
+          logging: error
+          alert: true
+
+# Data Transfer Objects
+dtos:
+  CustomerCreateRequest:
+    description: "Request object for creating a new customer"
+    properties:
+      firstName:
+        type: "String"
+        required: true
+        validation: ["not_blank", "min_length:2", "max_length:50", "name_format"]
+      lastName:
+        type: "String"
+        required: true
+        validation: ["not_blank", "min_length:2", "max_length:50", "name_format"]
+      email:
+        type: "String"
+        required: true
+        validation: ["not_blank", "email_format", "unique"]
+      phone:
+        type: "String"
+        required: false
+        validation: ["phone_format"]
+      dateOfBirth:
+        type: "LocalDate"
+        required: true
+        validation: ["not_null", "age_18_or_older"]
+      address:
+        type: "String"
+        required: false
+        validation: ["max_length:200"]
+
+  CustomerUpdateRequest:
+    description: "Request object for updating customer information"
+    properties:
+      firstName:
+        type: "String"
+        required: false
+        validation: ["min_length:2", "max_length:50", "name_format"]
+      lastName:
+        type: "String"
+        required: false
+        validation: ["min_length:2", "max_length:50", "name_format"]
+      email:
+        type: "String"
+        required: false
+        validation: ["email_format", "unique"]
+      phone:
+        type: "String"
+        required: false
+        validation: ["phone_format"]
+      dateOfBirth:
+        type: "LocalDate"
+        required: false
+        validation: ["age_18_or_older"]
+      address:
+        type: "String"
+        required: false
+        validation: ["max_length:200"]
+
+  CustomerStatusUpdateRequest:
+    description: "Request object for updating customer status"
+    properties:
+      status:
+        type: "CustomerStatus"
+        required: true
+        validation: ["not_null", "valid_status"]
+      reason:
+        type: "String"
+        required: false
+        validation: ["max_length:500"]
+
+  CustomerResponse:
+    description: "Response object containing customer information"
+    properties:
+      id:
+        type: "UUID"
+        description: "Customer unique identifier"
+      firstName:
+        type: "String"
+        description: "Customer first name"
+      lastName:
+        type: "String"
+        description: "Customer last name"
+      email:
+        type: "String"
+        description: "Customer email address"
+      phone:
+        type: "String"
+        description: "Customer phone number"
+      dateOfBirth:
+        type: "LocalDate"
+        description: "Customer date of birth"
+      address:
+        type: "String"
+        description: "Customer address"
+      customerStatus:
+        type: "CustomerStatus"
+        description: "Current customer status"
+      createdAt:
+        type: "LocalDateTime"
+        description: "Creation timestamp"
+      updatedAt:
+        type: "LocalDateTime"
+        description: "Last update timestamp"
+
+  PagedCustomerResponse:
+    description: "Paginated response for customer list"
+    properties:
+      content:
+        type: "List<CustomerResponse>"
+        description: "List of customers"
+      totalElements:
+        type: "Long"
+        description: "Total number of customers"
+      totalPages:
+        type: "Integer"
+        description: "Total number of pages"
+      currentPage:
+        type: "Integer"
+        description: "Current page number"
+      pageSize:
+        type: "Integer"
+        description: "Page size"
+
+# Error Handling
+error_handling:
+  validation_errors:
+    CustomerValidationException:
+      status_code: 400
+      message: "Invalid customer data provided"
+      details: "field_errors"
+  
+  business_errors:
+    CustomerNotFoundException:
+      status_code: 404
+      message: "Customer not found"
+    
+    EmailAlreadyExistsException:
+      status_code: 409
+      message: "Email address already exists"
+    
+    InvalidStatusTransitionException:
+      status_code: 400
+      message: "Invalid status transition"
+    
+    CustomerTooYoungException:
+      status_code: 400
+      message: "Customer must be at least 18 years old"
+  
+  system_errors:
+    DatabaseConnectionException:
+      status_code: 500
+      message: "Database connection error"
+    
+    ExternalServiceException:
+      status_code: 503
+      message: "External service unavailable"
+
+# Service Layer Specifications
+services:
+  CustomerService:
+    description: "Main business logic service for customer operations"
+    methods:
+      - name: "createCustomer"
+        description: "Create a new customer with validation"
+        business_logic:
+          - "Validate customer data"
+          - "Check email uniqueness"
+          - "Validate age requirements"
+          - "Generate customer ID"
+          - "Save customer to database"
+          - "Send welcome notification"
+          - "Create audit log"
+      
+      - name: "updateCustomer"
+        description: "Update existing customer information"
+        business_logic:
+          - "Validate customer exists"
+          - "Validate update data"
+          - "Check email uniqueness if changed"
+          - "Apply business rules"
+          - "Update customer record"
+          - "Create audit log"
+          - "Send update notification"
+      
+      - name: "updateCustomerStatus"
+        description: "Update customer status with validation"
+        business_logic:
+          - "Validate customer exists"
+          - "Check valid status transition"
+          - "Update status"
+          - "Create status audit log"
+          - "Send status notification"
+      
+      - name: "getCustomerById"
+        description: "Retrieve customer by ID"
+        business_logic:
+          - "Validate ID format"
+          - "Find customer"
+          - "Apply privacy filters"
+          - "Log access"
+      
+      - name: "getAllCustomers"
+        description: "Get paginated list of customers"
+        business_logic:
+          - "Apply pagination"
+          - "Filter by status if provided"
+          - "Sort by creation date"
+          - "Apply privacy filters"
+
+  CustomerValidationService:
+    description: "Service for customer data validation"
+    methods:
+      - name: "validateCustomerData"
+        description: "Comprehensive customer data validation"
+      - name: "validateEmailUniqueness"
+        description: "Check if email is already in use"
+      - name: "validateAge"
+        description: "Validate customer age requirements"
+      - name: "validateStatusTransition"
+        description: "Validate status change is allowed"
+
+  CustomerNotificationService:
+    description: "Service for sending customer notifications"
+    methods:
+      - name: "sendWelcomeNotification"
+        description: "Send welcome email to new customers"
+      - name: "sendUpdateNotification"
+        description: "Send update confirmation to customers"
+      - name: "sendStatusChangeNotification"
+        description: "Send status change notifications"
+
+testing:
+  unit_tests:
+    services:
+      - test: updateCustomerService
+        scenarios:
+          - name: successful_update
+            given: {customer_exists: true}
+            when: 
+              updateCustomer:
+                id: "valid-uuid"
+                firstName: "Updated"
+            then: 
+              customerUpdated: true
+              eventPublished: true
+          - name: customer_not_found
+            given: {customer_exists: false}
+            when:
+              updateCustomer:
+                id: "invalid-uuid"
+            then:
+              throws: CustomerNotFoundException
+
+  integration_tests:
+    api_endpoints:
+      - test: PUT /api/v1/customers/{id}
+        scenarios:
+          - name: valid_update
+            prerequisites:
+              - create_customer:
+                  id: "test-uuid"
+                  firstName: "John"
+            request:
+              path_parameters:
+                id: "test-uuid"
+              body:
+                firstName: "Jonathan"
+            response:
+              status: 200
+              body:
+                id: "test-uuid"
+                message: "Customer updated successfully"
+
+  performance_tests:
+    scenarios:
+      - name: customer_update_load
+        type: load_test
+        duration: 5m
+        target_rps: 50
+        success_criteria:
+          - p95_latency_ms: 150
+          - error_rate: 0.1%
+
+monitoring:
+  metrics:
+    - name: customer_updates
+      type: counter
+      labels: [status, field_updated]
+    - name: update_latency
+      type: histogram
+      buckets: [10, 50, 100, 200, 500]

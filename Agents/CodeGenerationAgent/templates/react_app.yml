@@ -1,0 +1,55 @@
+language: JavaScript
+framework: React
+version: 18.x
+
+project_structure:
+  - /src
+    - /components
+    - /pages
+    - /services
+    - /hooks
+    - /contexts
+    - /utils
+    - /assets
+    - /tests
+  - /public
+  - /styles
+  - /routes
+
+code_standards:
+  - Use functional components and React Hooks
+  - Follow component-based design and atomic structure if needed
+  - Use ESLint (AirBnB config) and Prettier for linting and formatting
+  - Use TypeScript if specified (optional)
+  - Use camelCase for variable and function names
+
+routing:
+  - Use react-router-dom (v6+) for page navigation
+  - Separate route definitions in /routes folder
+  - Use lazy loading for routes if the app grows
+
+state_management:
+  - Use React Context for small to medium apps
+  - For complex state, use Redux Toolkit or Zustand
+
+forms:
+  - Use react-hook-form for building forms
+  - Use Yup for schema-based validation
+
+api_integration:
+  - Use Axios for HTTP requests
+  - Centralize API methods in /services
+  - Use interceptors for token-based auth
+
+styling:
+  - Default to TailwindCSS
+  - Support for Material UI, SCSS, or styled-components based on project settings
+
+testing:
+  - Use Jest and React Testing Library
+  - Unit tests for components and hooks
+  - Integration tests for key user flows
+
+documentation:
+  - Each component should include JSDoc-style comments
+  - Include storybook setup for reusable UI components (optional)

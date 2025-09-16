@@ -1,0 +1,36 @@
+{
+  "timestamp": "2025-09-14T00:59:28.313167",
+  "project_path": "/Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124",
+  "result": {
+    "status": "partial",
+    "message": "Fixed 0 issues. 1 errors remain.",
+    "fixed_files": [],
+    "applied_changes": [],
+    "remaining_errors": [
+      {
+        "severity": "error",
+        "message": "\"message\": \"Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile (default-compile) on project Policy-service: Compilation failure: Compilation failure: \",",
+        "file_path": "",
+        "line_number": 0,
+        "column_number": 0
+      }
+    ],
+    "backup_path": "/Users/niladrib/WorkingFolder/genaiagent/GeneratedCode/policymanagementspec_20250911T184124/backups/pre_fix_20250914_005928",
+    "error_analysis": {
+      "total_errors": 1,
+      "by_severity": {
+        "error": 1
+      },
+      "by_file": {},
+      "by_type": {
+        "other": 1
+      },
+      "summary": {
+        "most_common_type": "other",
+        "files_affected": 0,
+        "error_count": 1,
+        "warning_count": 0
+      }
+    }
+  }
+}

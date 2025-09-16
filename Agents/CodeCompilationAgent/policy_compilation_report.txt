@@ -1,0 +1,82 @@
+============================================================
+CODE COMPILATION REPORT
+============================================================
+
+Project Path: /Users/niladrib/WorkingFolder/genaiagent/CodeGenerationAgent/generated_examples/policy_management
+Project Type: java_springboot
+Compilation Status: FAILED
+Compilation Time: 15.42 seconds
+
+SUMMARY:
+  Total Issues: 25
+  Errors: 25
+  Warnings: 0
+  Build Successful: False
+
+ERRORS:
+----------------------------------------
+1. COMPILATION ERROR : 
+
+2. /Users/niladrib/WorkingFolder/genaiagent/CodeGenerationAgent/generated_examples/policy_management/src/main/java/com/policycorp/insurance/policy/controller/PolicyController.java:[99,1] illegal character: '\'
+
+3. illegal character: '\'
+   File: [ERROR] /Users/niladrib/WorkingFolder/genaiagent/CodeGenerationAgent/generated_examples/policy_management/src/main/java/com/policycorp/insurance/policy/controller/PolicyController.java:99:1
+
+4. /Users/niladrib/WorkingFolder/genaiagent/CodeGenerationAgent/generated_examples/policy_management/src/main/java/com/policycorp/insurance/policy/controller/PolicyController.java:[99,3] illegal character: '\'
+
+5. illegal character: '\'
+   File: [ERROR] /Users/niladrib/WorkingFolder/genaiagent/CodeGenerationAgent/generated_examples/policy_management/src/main/java/com/policycorp/insurance/policy/controller/PolicyController.java:99:3
+
+6. /Users/niladrib/WorkingFolder/genaiagent/CodeGenerationAgent/generated_examples/policy_management/src/main/java/com/policycorp/insurance/policy/controller/PolicyController.java:[99,30] class, interface, enum, or record expected
+
+7. class, interface, enum, or record expected
+   File: [ERROR] /Users/niladrib/WorkingFolder/genaiagent/CodeGenerationAgent/generated_examples/policy_management/src/main/java/com/policycorp/insurance/policy/controller/PolicyController.java:99:30
+
+8. /Users/niladrib/WorkingFolder/genaiagent/CodeGenerationAgent/generated_examples/policy_management/src/main/java/com/policycorp/insurance/policy/controller/PolicyController.java:[99,92] <identifier> expected
+
+9. <identifier> expected
+   File: [ERROR] /Users/niladrib/WorkingFolder/genaiagent/CodeGenerationAgent/generated_examples/policy_management/src/main/java/com/policycorp/insurance/policy/controller/PolicyController.java:99:92
+
+10. Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile (default-compile) on project Policy-service: Compilation failure: Compilation failure: 
+
+11. /Users/niladrib/WorkingFolder/genaiagent/CodeGenerationAgent/generated_examples/policy_management/src/main/java/com/policycorp/insurance/policy/controller/PolicyController.java:[99,1] illegal character: '\'
+
+12. illegal character: '\'
+   File: [ERROR] /Users/niladrib/WorkingFolder/genaiagent/CodeGenerationAgent/generated_examples/policy_management/src/main/java/com/policycorp/insurance/policy/controller/PolicyController.java:99:1
+
+13. /Users/niladrib/WorkingFolder/genaiagent/CodeGenerationAgent/generated_examples/policy_management/src/main/java/com/policycorp/insurance/policy/controller/PolicyController.java:[99,3] illegal character: '\'
+
+14. illegal character: '\'
+   File: [ERROR] /Users/niladrib/WorkingFolder/genaiagent/CodeGenerationAgent/generated_examples/policy_management/src/main/java/com/policycorp/insurance/policy/controller/PolicyController.java:99:3
+
+15. /Users/niladrib/WorkingFolder/genaiagent/CodeGenerationAgent/generated_examples/policy_management/src/main/java/com/policycorp/insurance/policy/controller/PolicyController.java:[99,30] class, interface, enum, or record expected
+
+16. class, interface, enum, or record expected
+   File: [ERROR] /Users/niladrib/WorkingFolder/genaiagent/CodeGenerationAgent/generated_examples/policy_management/src/main/java/com/policycorp/insurance/policy/controller/PolicyController.java:99:30
+
+17. /Users/niladrib/WorkingFolder/genaiagent/CodeGenerationAgent/generated_examples/policy_management/src/main/java/com/policycorp/insurance/policy/controller/PolicyController.java:[99,92] <identifier> expected
+
+18. <identifier> expected
+   File: [ERROR] /Users/niladrib/WorkingFolder/genaiagent/CodeGenerationAgent/generated_examples/policy_management/src/main/java/com/policycorp/insurance/policy/controller/PolicyController.java:99:92
+
+19. -> [Help 1]
+
+20.  
+
+21. To see the full stack trace of the errors, re-run Maven with the -e switch.
+
+22. Re-run Maven using the -X switch to enable full debug logging.
+
+23.  
+
+24. For more information about the errors and possible solutions, please read the following articles:
+
+25. [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+
+BUILD INFORMATION:
+----------------------------------------
+  build_tool: maven
+  goals: ['clean', 'compile']
+  return_code: 1
+
+============================================================
