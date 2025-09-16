@@ -20,7 +20,6 @@ A comprehensive multi-agent platform for software development workflows, featuri
                                                         │ • Workflow Orch.    │
                                                         └─────────────────────┘
 
-<img width="1699" height="889" alt="Screenshot 2025-09-16 at 18 43 30" src="https://github.com/user-attachments/assets/369b26b3-48b0-4830-b46e-67c473392549" />
 
 
 
@@ -28,6 +27,9 @@ A comprehensive multi-agent platform for software development workflows, featuri
 ```
 
 ---
+![Homepage Screenshot]([https://github.com/username/repo/blob/main/images/homepage.png?raw=true](https://github.com/niladribhandari/genaiagent/blob/main/Screenshots/Screenshot%202025-09-16%20at%2018.43.04.png))
+
+
 
 ## 🚀 Quick Start
 
