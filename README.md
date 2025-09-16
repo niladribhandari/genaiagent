@@ -19,6 +19,12 @@ A comprehensive multi-agent platform for software development workflows, featuri
                                                         │ • API Spec Writing  │
                                                         │ • Workflow Orch.    │
                                                         └─────────────────────┘
+
+<img width="1699" height="889" alt="Screenshot 2025-09-16 at 18 43 30" src="https://github.com/user-attachments/assets/369b26b3-48b0-4830-b46e-67c473392549" />
+
+
+
+
 ```
 
 ---
